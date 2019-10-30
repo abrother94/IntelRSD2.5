@@ -1,0 +1,69 @@
+{
+    "service" : "rest-server",
+    "server": {
+        "network-interface-name" : ["enp2s0"],
+        "connectors" : [
+            {
+                "use-ssl" : true,
+		"certs-directory" : "/home/abrother/certs",
+		"client-cert-required" :false,
+                "port": 8888,
+                "redirect-port" : 8443,
+                "thread-mode" : "select",
+                "thread-pool-size" : 1,
+                "authentication-type" : "none"
+            }
+        ]
+    },
+    "event-service" : {
+        "delivery-retry-attempts" : 3,
+        "delivery-retry-interval-seconds" : 60
+    },
+    "authentication" : {
+        "username" : "root",
+        "password" : "redfish"
+    },
+    "session-service" : {
+        "service-enabled" : false,
+        "session-timeout" : 30
+    },
+    "ssdp-service" : {
+        "enabled" : false,
+        "announce-interval-seconds" : 0,
+        "ttl" : 2
+    },
+    "rmm-present" : false,
+    "registration": {
+        "port": 8383,
+        "minDelay": 3
+    },
+    "eventing" : {
+        "address": "localhost",
+        "port" : 5567,
+        "poll-interval-sec" : 20
+    },
+    "rest" : {
+        "service-root-name" : "PSME Service Root"
+    },
+    "database": {
+        "location": "/var/opt/psme",
+        "retention-interval-sec": 600,
+        "retention-outdated-sec": 2419200
+    },
+    "loggers" : [
+        {
+            "name" : "app",
+            "level" : "INFO",
+            "timeformat" : "DATE_NS",
+            "color" : true,
+            "output" : true,
+            "tagging" : true,
+            "moredebug" : false,
+            "streams" : [
+                 {
+                    "type" : "STDOUT"
+                 }
+            ]
+        }
+    ]
+}
