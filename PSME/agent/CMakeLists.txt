@@ -28,6 +28,10 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/chassis)
     add_subdirectory(chassis)
 endif()
 
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/acc_chassis)
+    add_subdirectory(acc_chassis)
+endif()
+
 #if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/pnc)
 #    add_subdirectory(pnc)
 #endif()
