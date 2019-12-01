@@ -52,18 +52,14 @@ if (NOT (CMAKE_CROSSCOMPILING OR "${CMAKE_TARGET_ARCH}" STREQUAL "32"))
 endif()
 
 # For ONL LIB PATH
-
 set(CMAKE_INCLUDE_PATH "${CMAKE_BINARY_DIR}/include;${CMAKE_SYSTEM_INCLUDE_PATH}")
 set(CMAKE_LIBRARY_PATH "${CMAKE_BINARY_DIR}/lib;${CMAKE_SYSTEM_LIBRARY_PATH}")
 set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR};${CMAKE_SYSTEM_PREFIX_PATH}")
 
-set(LIBONLP "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp/BUILD/jessie/x86_64-linux-gnu/bin/libonlp.so")
-set(LIBONLP_PF "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp-platform/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform.so")
-set(LIBONLP_PF_DF "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp-platform-defaults/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform-defaults.so")
-
-
-# End
-
+set(ONL_ROOT_PATH "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux")
+set(LIBONLP "${ONL_ROOT_PATH}/packages/base/amd64/onlp/builds/onlp/BUILD/jessie/x86_64-linux-gnu/bin/libonlp.so")
+set(LIBONLP_PF "${ONL_ROOT_PATH}/packages/base/amd64/onlp/builds/onlp-platform/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform.so")
+set(LIBONLP_PF_DF "${ONL_ROOT_PATH}/packages/base/amd64/onlp/builds/onlp-platform-defaults/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform-defaults.so")
 
 # Path to folder with all cmake scripts
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
