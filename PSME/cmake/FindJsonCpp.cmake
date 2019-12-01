@@ -1,6 +1,6 @@
 # <license_header>
 #
-# Copyright (c) 2015-2019 Intel Corporation
+# Copyright (c) 2015-2017 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,21 +16,4 @@
 #
 # </license_header>
 
-if (NOT GTEST_FOUND)
-    return()
-endif()
-
-add_subdirectory(loader)
-add_subdirectory(md5)
-add_subdirectory(network_utils)
-add_subdirectory(tree_stability)
-add_subdirectory(ipmb)
-#Add for Accton ONLP test
-add_subdirectory(onlp_test)
-
-add_custom_target(unittest_acc-psme-chassis
-                  make
-)
-add_custom_target(unittest_acc-psme-chassis_run
-                  ctest --output-on-failure
-)
+find_package_local(JsonCpp jsoncpp)

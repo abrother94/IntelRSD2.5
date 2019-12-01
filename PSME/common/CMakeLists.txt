@@ -26,6 +26,7 @@ add_subdirectory(base64)
 add_subdirectory(logger)
 add_subdirectory(database)
 add_subdirectory(ipmi)
+add_subdirectory(json-cxx)
 add_subdirectory(json)
 add_subdirectory(json-rpc)
 add_subdirectory(configuration)
@@ -53,3 +54,13 @@ add_subdirectory(acpi)
 add_subdirectory(tgt)
 add_subdirectory(lvm)
 #add_subdirectory(opaepp)
+
+#For ONL/BAL/NET helper
+add_subdirectory(acc_net_helper)
+add_subdirectory(acc_sys_helper)
+add_subdirectory(acc_onlp_helper)
+
+IF("${CUSE_ACC_BAL3_DISTLIB}" STREQUAL "TRUE" )
+    add_subdirectory(acc_bal3_api_dist_helper)
+ENDIF()
+

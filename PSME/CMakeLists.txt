@@ -51,6 +51,19 @@ if (NOT (CMAKE_CROSSCOMPILING OR "${CMAKE_TARGET_ARCH}" STREQUAL "32"))
     set(BUILD_AARDVARK NO)
 endif()
 
+# For ONL LIB PATH
+
+set(CMAKE_INCLUDE_PATH "${CMAKE_BINARY_DIR}/include;${CMAKE_SYSTEM_INCLUDE_PATH}")
+set(CMAKE_LIBRARY_PATH "${CMAKE_BINARY_DIR}/lib;${CMAKE_SYSTEM_LIBRARY_PATH}")
+set(CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR};${CMAKE_SYSTEM_PREFIX_PATH}")
+
+set(LIBONLP "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp/BUILD/jessie/x86_64-linux-gnu/bin/libonlp.so")
+set(LIBONLP_PF "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp-platform/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform.so")
+set(LIBONLP_PF_DF "${CMAKE_BINARY_DIR}/../../../../OpenNetworkLinux/packages/base/amd64/onlp/builds/onlp-platform-defaults/BUILD/jessie/x86_64-linux-gnu/bin/libonlp-platform-defaults.so")
+
+
+# End
+
 
 # Path to folder with all cmake scripts
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -155,6 +168,9 @@ endif()
 if (BUILD_EOS_SDK)
     install_third_party(EosSDK)
 endif()
+
+# For Accton helper usage
+install_third_party(JsonCpp)
 
 # Enable sanitizers
 if (CMAKE_BUILD_TYPE STREQUAL "asanitize")
