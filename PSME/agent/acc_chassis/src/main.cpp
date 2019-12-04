@@ -27,21 +27,11 @@
 #include "agent-framework/command/command_server.hpp"
 #include "agent-framework/logger_loader.hpp"
 
-#include "loader/chassis_loader.hpp"
 #include "database/database.hpp"
 
 #include "configuration/configuration.hpp"
 #include "configuration/configuration_validator.hpp"
 #include "default_configuration.hpp"
-
-#include "ipmb/service.hpp"
-#include "ipmb/mux.hpp"
-
-#include "status/bmc.hpp"
-#include "ipmb/gpio.hpp"
-#include "ipmi/management_controller.hpp"
-#include "ipmi/command/generic/get_device_id.hpp"
-#include "tree_stability/chassis_tree_stabilizer.hpp"
 
 #include "json-rpc/connectors/http_server_connector.hpp"
 #include <csignal>
@@ -50,8 +40,7 @@ using namespace agent_framework;
 using namespace agent_framework::generic;
 using namespace logger_cpp;
 using namespace configuration;
-using namespace agent::chassis;
-using namespace agent::chassis::ipmb;
+//using namespace agent::chassis;
 using namespace agent_framework::eventing;
 
 using agent::generic::DEFAULT_CONFIGURATION;
@@ -65,8 +54,6 @@ static constexpr unsigned int DEFAULT_SERVER_PORT = 7780;
 
 const json::Json& init_configuration(int argc, const char** argv);
 bool check_configuration(const json::Json& json);
-
-BmcCollection load_bmcs(const json::Json& configuration);
 
 /*!
  * @brief Generic Agent main method.
@@ -83,7 +70,7 @@ int main(int argc, const char* argv[]) {
     /* Initialize logger */
     LoggerLoader loader(configuration);
     loader.load(LoggerFactory::instance());
-    log_info("chassis-agent", "Running PSME Chassis SDV...");
+    log_info("chassis-agent", "Running Accton PSME Chassis ...");
 
     if (configuration.value("database", json::Json()).is_object() && configuration.value("database", json::Json::object()).value("location", json::Json()).is_string()) {
         database::Database::set_default_location(configuration["database"]["location"].get<std::string>());
@@ -95,27 +82,6 @@ int main(int argc, const char* argv[]) {
     catch (const std::exception& e) {
         log_error("chassis-agent", "Cannot read server port " << e.what());
     }
-
-    agent::chassis::loader::ChassisLoader module_loader{};
-    if (!module_loader.load(configuration)) {
-        log_error("chassis-agent", "Invalid modules configuration");
-        return -2;
-    }
-
-    BmcCollection bmcs{};
-    try {
-        bmcs = load_bmcs(configuration);
-        for (auto& bmc : bmcs) {
-            bmc->start();
-        }
-    }
-    catch (const std::exception& e) {
-        log_error("chassis-agent", e.what());
-        return -1;
-    }
-
-    ipmb::Service ipmb_service;
-    ipmb_service.start();
 
     EventDispatcher event_dispatcher;
     event_dispatcher.start();
@@ -138,19 +104,13 @@ int main(int argc, const char* argv[]) {
             << ". " << "Quitting now...");
         amc_connection.stop();
         event_dispatcher.stop();
-        ipmb_service.stop();
         return -3;
     }
 
     wait_for_interrupt();
-    log_info("chassis-agent", "Stopping SDV PSME Chassis Agent.");
+    log_info("chassis-agent", "Stopping Accton PSME Chassis Agent.");
 
-    /* Cleanup */
-    for (auto& bmc: bmcs) {
-        bmc->stop();
-    }
-    ipmb_service.stop();
-    server.stop();
+    //server.stop();
     amc_connection.stop();
     event_dispatcher.stop();
     Configuration::cleanup();
@@ -192,48 +152,4 @@ bool check_configuration(const json::Json& json) {
         }
     }
     return true;
-}
-
-BmcCollection load_bmcs(const json::Json&) {
-    BmcCollection bmcs{};
-    agent::chassis::Bmc::Duration state_update_interval = agent::chassis::ipmb::Gpio::get_instance()->get_minimal_update_interval();
-
-    auto drawer_manager_keys = CommonComponents::get_instance()->get_module_manager().get_keys("");
-    auto sled_manager_keys = CommonComponents::get_instance()->
-            get_module_manager().get_keys(drawer_manager_keys.front());
-
-    for (const auto& manager_key: sled_manager_keys) {
-        const auto manager = agent_framework::module::get_manager<agent_framework::model::Manager>()
-            .get_entry(manager_key);
-        const auto manager_uuid = agent::chassis::ChassisTreeStabilizer().stabilize(manager_key);
-        auto slot = manager.get_slot();
-        auto read_presence_fn = [slot]() {
-            log_debug("bmc", "reading presence on slot: " << slot);
-            return agent::chassis::ipmb::Gpio::get_instance()->is_present(uint8_t(slot));
-        };
-
-        const auto& connection = manager.get_connection_data();
-        ipmi::ManagementController mc{connection.get_ip_address(), connection.get_port(),
-            connection.get_username(), connection.get_password()};
-        auto read_online_state_fn = [mc]() mutable {
-            try {
-                ipmi::command::generic::response::GetDeviceId device_rsp{};
-                mc.send(ipmi::command::generic::request::GetDeviceId{}, device_rsp);
-                log_debug("bmc", "BMC " << mc.get_info() << " is available...");
-                return true;
-            }
-            catch (std::exception& e) {
-                log_debug("bmc", "BMC " << mc.get_info() << " reading state error: " << e.what());
-            }
-            return false;
-        };
-        bmcs.push_back(agent_framework::Bmc::Ptr(new agent::chassis::Bmc(manager_uuid, connection,
-                state_update_interval, read_presence_fn, read_online_state_fn)));
-    }
-
-    if (bmcs.empty()) {
-        throw std::runtime_error("Invalid modules configuration");
-    }
-
-    return bmcs;
 }

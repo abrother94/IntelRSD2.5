@@ -17,25 +17,11 @@
 # </license_header>
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-add_subdirectory(ipmb)
 add_subdirectory(command)
-add_subdirectory(status)
-add_subdirectory(loader)
-add_subdirectory(tree_stability)
+
 
 add_library(acc-chassis-commands STATIC
-    $<TARGET_OBJECTS:acc-chassis-command-sdv>
-)
-
-add_library(acc-chassis-utils
-    $<TARGET_OBJECTS:acc-chassis-status-impl>
-    $<TARGET_OBJECTS:acc-chassis-loader>
-    $<TARGET_OBJECTS:acc-chassis-tree-stability>
-)
-
-add_library(acc-chassis-ipmb
-    $<TARGET_OBJECTS:acc-ipmb-service>
-    $<TARGET_OBJECTS:acc-ipmb-service-command>
+        $<TARGET_OBJECTS:chassis-command-acc>
 )
 
 add_executable(acc-psme-chassis
@@ -54,20 +40,15 @@ generate_default_config_file(
 target_link_libraries(acc-psme-chassis
     ${AGENT_ACC_CHASSIS_LIBRARIES}
     chassis-utils
-    chassis-ipmb
     agent-framework
     uuid
     logger
-    ${PCA95XX_LIBRARIES}
     ${SAFESTRING_LIBRARIES}
     configuration
-    ipmi
     base64
-    ${IPMITOOL_LIBRARIES}
     pthread
     ${MICROHTTPD_LIBRARIES}
     ${CURL_LIBRARIES}
-    ${CY_USB_SERIAL_LIBRARIES}
     ${NET_LIBRARIES}
     ${SAFESTRING_LIBRARIES}
     md5

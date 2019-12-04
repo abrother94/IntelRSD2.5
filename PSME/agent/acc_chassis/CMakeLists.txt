@@ -26,14 +26,13 @@ endif()
 
 set(AGENT_ACC_CHASSIS_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(AGENT_ACC_CHASSIS_LIBRARIES
-    -Wl,--whole-archive chassis-commands -Wl,--no-whole-archive
+    -Wl,--whole-archive acc-chassis-commands -Wl,--no-whole-archive
 )
 
 include_directories(
     ${BASE64_INCLUDE_DIRS}
     ${COMMON_INCLUDE_DIRS}
     ${LOGGER_INCLUDE_DIRS}
-    ${IPMI_INCLUDE_DIRS}
     ${CONFIGURATION_INCLUDE_DIRS}
     ${DATABASE_INCLUDE_DIRS}
     ${AGENT_FRAMEWORK_INCLUDE_DIRS}
@@ -45,9 +44,7 @@ include_directories(SYSTEM
     ${SAFESTRING_INCLUDE_DIRS}
     ${UUID_INCLUDE_DIRS}
     ${MD5_INCLUDE_DIRS}
-    ${CY_USB_SERIAL_INCLUDE_DIRS}
 )
 
 add_subdirectory(src)
 add_subdirectory(tests)
-add_subdirectory(examples)

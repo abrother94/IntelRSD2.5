@@ -16,20 +16,15 @@
 #
 # </license_header>
 
-add_library(acc-chassis-command-sdv OBJECT
-    get_manager_info.cpp
-    get_collection.cpp
+add_library(chassis-command-acc OBJECT
     get_chassis_info.cpp
-    get_authorization_certificate.cpp
+    get_collection.cpp
+    get_manager_info.cpp
     get_managers_collection.cpp
-    set_component_attributes.cpp
-    get_tasks_collection.cpp
-    get_task_info.cpp
-    get_task_result_info.cpp
-    delete_task.cpp
-    get_metric_definition_info.cpp
+    get_managers_collection.cpp
     get_metric_definitions_collection.cpp
     get_metrics.cpp
+    get_tasks_collection.cpp
 )
 
-set_psme_command_target_properties(acc-chassis-command-sdv)
+set_psme_command_target_properties(chassis-command-acc)

@@ -18,14 +18,12 @@
  * limitations under the License.
  *
  * @file command/get_collection.cpp
- * @brief GetCollection sdv implementation
+ * @brief GetCollection accton-chassis implementation
  * */
 
 #include "agent-framework/module/common_components.hpp"
 #include "agent-framework/command/registry.hpp"
 #include "agent-framework/command/chassis_commands.hpp"
-
-#include "ipmb/certificate_manager.hpp"
 #include "base64/base64.hpp"
 
 using namespace agent_framework::command;

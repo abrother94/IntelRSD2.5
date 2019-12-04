@@ -18,7 +18,7 @@
  * limitations under the License.
  *
  * @file command/get_manager_info.cpp
- * @brief GetManagerInfo sdv implementation
+ * @brief GetManagerInfo acc-chassis implementation
  * */
 
 #include "agent-framework/module/common_components.hpp"

@@ -42,7 +42,7 @@ class Task {
 // @TODO: allow registration of callbacks using std::bind
 public:
     using CallbackFunctionType = std::function<void(void)>;
-    using ExceptionHandlerFunctionType = std::function<void(const agent_framework::exceptions::GamiException&)>;
+    using ExceptionHandlerFunctionType  = std::function<void(const agent_framework::exceptions::GamiException&)>;
     using ExceptionCallbackFunctionType = std::function<void(const agent_framework::exceptions::GamiException&)>;
     using PrerunActionType = std::function<void(void)>;
     using PostrunActionType = std::function<void(void)>;

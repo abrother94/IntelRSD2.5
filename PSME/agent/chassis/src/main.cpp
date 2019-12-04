@@ -103,17 +103,19 @@ int main(int argc, const char* argv[]) {
     }
 
     BmcCollection bmcs{};
-    try {
+    try
+    {
         bmcs = load_bmcs(configuration);
-        for (auto& bmc : bmcs) {
+        for (auto &bmc : bmcs)
+        {
             bmc->start();
         }
     }
-    catch (const std::exception& e) {
+    catch (const std::exception &e)
+    {
         log_error("chassis-agent", e.what());
         return -1;
     }
-
     ipmb::Service ipmb_service;
     ipmb_service.start();
 
@@ -138,6 +140,7 @@ int main(int argc, const char* argv[]) {
             << ". " << "Quitting now...");
         amc_connection.stop();
         event_dispatcher.stop();
+
         ipmb_service.stop();
         return -3;
     }
@@ -146,7 +149,9 @@ int main(int argc, const char* argv[]) {
     log_info("chassis-agent", "Stopping SDV PSME Chassis Agent.");
 
     /* Cleanup */
-    for (auto& bmc: bmcs) {
+
+    for (auto &bmc : bmcs)
+    {
         bmc->stop();
     }
     ipmb_service.stop();

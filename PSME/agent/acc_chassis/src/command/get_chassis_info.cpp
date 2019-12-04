@@ -18,7 +18,7 @@
  * limitations under the License.
  *
  * @file command/get_chassis_info.cpp
- * @brief GetChassisInfo sdv implementation
+ * @brief GetChassisInfo accton chassis implementation
  * */
 
 #include "agent-framework/module/common_components.hpp"

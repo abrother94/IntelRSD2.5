@@ -20,12 +20,6 @@ if (NOT GTEST_FOUND)
     return()
 endif()
 
-add_subdirectory(loader)
-add_subdirectory(md5)
-add_subdirectory(network_utils)
-add_subdirectory(tree_stability)
-add_subdirectory(ipmb)
-#Add for Accton ONLP test
 add_subdirectory(onlp_test)
 
 add_custom_target(unittest_acc-psme-chassis

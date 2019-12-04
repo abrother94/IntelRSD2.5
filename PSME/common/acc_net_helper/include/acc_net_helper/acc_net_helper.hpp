@@ -44,7 +44,7 @@ namespace acc_net_helper {
     public:	    
         std::string m_tmp_file_dbg_file = "/tmp/ADbg";
         ifstream    m_source_files= {};
-	 int m_active_log = 0;		
+	    int m_active_log = 0;		
 	 
         explicit ADbg()
         {			
