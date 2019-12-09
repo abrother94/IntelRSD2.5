@@ -72,7 +72,7 @@ protected:
     void set_running(bool enable) { m_running = enable; }
 
 private:
-    std::atomic_bool m_running{false};
+    std::atomic_bool m_running{true};
     std::thread m_thread{};
 };
 

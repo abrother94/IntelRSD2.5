@@ -18,10 +18,20 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(command)
+add_subdirectory(onlp)
+add_subdirectory(loader)
 
 
 add_library(acc-chassis-commands STATIC
         $<TARGET_OBJECTS:chassis-command-acc>
+)
+
+add_library(acc-chassis-loader-lib
+        $<TARGET_OBJECTS:acc-chassis-loader>
+)
+
+add_library(acc-onlp-watcher
+        $<TARGET_OBJECTS:onlp-watcher>
 )
 
 add_executable(acc-psme-chassis
@@ -39,7 +49,8 @@ generate_default_config_file(
 
 target_link_libraries(acc-psme-chassis
     ${AGENT_ACC_CHASSIS_LIBRARIES}
-    chassis-utils
+    acc-chassis-loader-lib
+    acc-onlp-watcher
     agent-framework
     uuid
     logger

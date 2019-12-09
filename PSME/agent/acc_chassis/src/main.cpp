@@ -27,7 +27,11 @@
 #include "agent-framework/command/command_server.hpp"
 #include "agent-framework/logger_loader.hpp"
 
+#include "loader/acc_chassis_loader.hpp"
 #include "database/database.hpp"
+
+#include "onlp/watcher/get_onlp_info_task.hpp"
+#include "onlp/watcher/watcher.hpp"
 
 #include "configuration/configuration.hpp"
 #include "configuration/configuration_validator.hpp"
@@ -38,10 +42,11 @@
 
 using namespace agent_framework;
 using namespace agent_framework::generic;
+using namespace agent::chassis;
 using namespace logger_cpp;
 using namespace configuration;
-//using namespace agent::chassis;
 using namespace agent_framework::eventing;
+using namespace agent::acc_chassis::onlp;
 
 using agent::generic::DEFAULT_CONFIGURATION;
 using agent::generic::DEFAULT_VALIDATOR_JSON;
@@ -83,6 +88,13 @@ int main(int argc, const char* argv[]) {
         log_error("chassis-agent", "Cannot read server port " << e.what());
     }
 
+    agent::chassis::loader::ChassisLoader module_loader{};
+    if (!module_loader.load(configuration))
+    {
+        log_error("chassis-agent", "Invalid modules configuration");
+        return -2;
+    }
+
     EventDispatcher event_dispatcher;
     event_dispatcher.start();
 
@@ -106,6 +118,10 @@ int main(int argc, const char* argv[]) {
         event_dispatcher.stop();
         return -3;
     }
+
+    watcher::Watcher onlp_watcher{};
+    onlp_watcher.add_task(std::make_shared<watcher::OnlpGetInfoTask>());
+    onlp_watcher.start();
 
     wait_for_interrupt();
     log_info("chassis-agent", "Stopping Accton PSME Chassis Agent.");
