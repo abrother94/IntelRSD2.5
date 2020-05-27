@@ -1,6 +1,6 @@
-#include "../include/acc_bal3_api_dist_helper/acc_bal3_api_dist_helper.hpp"
+#include "../include/acc_bal_api_dist_helper/acc_bal_api_dist_helper.hpp"
 
-using namespace acc_bal3_api_dist_helper ;
+using namespace acc_bal_api_dist_helper ;
 
 int main(int argc, char** argv)
 {
@@ -41,7 +41,6 @@ int main(int argc, char** argv)
     sleep(10);
 
     OLT.activate_onu(0 , 1, cs_vendor_id, cs_vendor_spec);
-    //OLT.enable_cli();	
     OLT.enter_cmd_shell();
     return 1;
 }

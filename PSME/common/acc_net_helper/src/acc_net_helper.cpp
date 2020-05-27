@@ -1,9 +1,7 @@
-
 #include "acc_net_helper/acc_net_helper.hpp"
 
 using namespace acc_net_helper;
 
-		
 void HelperTools::exec_shell(const char* cmd, char * result_a)
 {
     const int CMD_TIMEOUT = 9;
@@ -17,13 +15,18 @@ void HelperTools::exec_shell(const char* cmd, char * result_a)
         sprintf(tcommand, "timeout %d %s", timeout ,cmd);
         FILE* pipe = popen(tcommand, "r");
     
-        if (!pipe) throw std::runtime_error("popen() failed!");
-        try {
-            while (!feof(pipe)) {
+        if (!pipe)
+            throw std::runtime_error("popen() failed!");
+        try
+        {
+            while (!feof(pipe))
+            {
                 if (fgets(buffer, BUFFER_SIZE, pipe) != NULL)
                     result += buffer;
             }
-        } catch (...) {
+        }
+        catch (...)
+        {
             pclose(pipe);
             throw;
         }
@@ -103,7 +106,6 @@ void HostnameConfig::Restart()
     return;
 }
 
-
 int InterfaceConfig::Get_Interface_Ip_Info(std::string& inf_name)
 {
     int fd = 0;
@@ -173,39 +175,62 @@ int InterfaceConfig::Get_Interface_Ip_Info(std::string& inf_name)
     edata.cmd = ETHTOOL_GSET;
 
     rc = ioctl(sock, SIOCETHTOOL, &ifr);
-    if (rc < 0) {
+    if (rc < 0)
+    {
         printf("InterfaceConfig::Get_Interface_info speed ioctl error ");
         result = -1;	
     }
     switch (ethtool_cmd_speed(&edata)) 
     {
-        case SPEED_10: m_speed = 10; break;
-        case SPEED_100:m_speed = 100; break;
-        case SPEED_1000: m_speed = 1000; break;
-        case SPEED_2500: m_speed = 2500; break;
-        case SPEED_10000: m_speed = 10000; break;
-        default:m_speed = 1000;
+    case SPEED_10:
+        m_speed = 10;
+        break;
+    case SPEED_100:
+        m_speed = 100;
+        break;
+    case SPEED_1000:
+        m_speed = 1000;
+        break;
+    case SPEED_2500:
+        m_speed = 2500;
+        break;
+    case SPEED_10000:
+        m_speed = 10000;
+        break;
+    default:
+        m_speed = 1000;
     }	
 
     switch (edata.duplex)
     {
-        case	DUPLEX_FULL : m_full = "full";break;
-        case	DUPLEX_HALF: m_full = "half";break;
-	 default: m_full="full";break;
+    case DUPLEX_FULL:
+        m_full = "full";
+        break;
+    case DUPLEX_HALF:
+        m_full = "half";
+        break;
+    default:
+        m_full = "full";
+        break;
     }
 
     switch (edata.autoneg)
     {
-        case	AUTONEG_DISABLE : m_auto = false;break;
-        case	AUTONEG_ENABLE: m_auto    = true;break;
-	 default: m_auto=true;break;
+    case AUTONEG_DISABLE:
+        m_auto = false;
+        break;
+    case AUTONEG_ENABLE:
+        m_auto = true;
+        break;
+    default:
+        m_auto = true;
+        break;
     }
 	
     close(fd);   
+    close(sock);
     return result;
 }
-
-
 
 int InterfaceConfig::Get_Interface_DHCP_Enable(std::string& inf_name)
 {
@@ -301,7 +326,6 @@ const std::string InterfaceConfig::Get_Static_DNS_Name_Server(std::string& inf_n
     				
                     if (dnsname_found !=std::string::npos )				
                         return RLINE.substr(RLINE.find(" ") + 1); 	 
-                        
                 }
             }  
         }
@@ -325,7 +349,6 @@ int InterfaceConfig::Set_Interface_DHCPv4_Enable(std::string& inf_name)
     rename(m_tmp_file_name_1.c_str(), m_file_network_interfaces.c_str());
 
     return 1;
-
 }
 
 int InterfaceConfig::Set_Interface_IPv6_SLAAC_Enable(std::string& inf_name)
@@ -333,7 +356,6 @@ int InterfaceConfig::Set_Interface_IPv6_SLAAC_Enable(std::string& inf_name)
     std::string type("v6");
     remove(m_file_network_dhcpv6.c_str());
     remove(m_tmp_file_name_2.c_str());
-
 
     Open(type);
 
@@ -376,7 +398,6 @@ int InterfaceConfig::Set_Interface_IPv6_Disable(std::string& inf_name)
     return 1;
 }
 
-
 int InterfaceConfig::Set_Interface_Ipv4_Info(std::string& inf_name, std::string& ifr_ip, std::string& ifr_ipmask, std::string& ifr_gateway, std::string& ifr_nameserver)
 {
     std::string type("v4");
@@ -415,13 +436,11 @@ int InterfaceConfig::Set_Interface_Ipv4_Info(std::string& inf_name, std::string&
 
     m_dest_v4_interfaces << "source " << m_file_network_dhcpv6 << endl;
 
-		
     Close(type);
     rename(m_tmp_file_name_1.c_str(), m_file_network_interfaces.c_str());
 
     return 1;
 }
-
 
 int InterfaceConfig::Set_Interface_Ipv6_Info(std::string& inf_name, std::string& ifr_ip, std::string& ifr_ipmask, std::string& ifr_gateway, std::string& ifr_nameserver)
 {
@@ -432,7 +451,6 @@ int InterfaceConfig::Set_Interface_Ipv6_Info(std::string& inf_name, std::string&
 
     Open(type);
 		
-    
     m_dest_v6_interfaces << "auto " << inf_name << endl;
     m_dest_v6_interfaces << "iface " << inf_name << " inet6 static" << endl;
 	
@@ -453,8 +471,6 @@ int InterfaceConfig::Set_Interface_Ipv6_Info(std::string& inf_name, std::string&
 
     return 1;
 }
-
-
 
 void InterfaceConfig::Open(std::string& type)
 {
@@ -485,7 +501,6 @@ void InterfaceConfig::Open(std::string& type)
     }
 }
 
-
 void InterfaceConfig::Close(std::string& type)
 {
     if( type == "v4")
@@ -500,7 +515,6 @@ void InterfaceConfig::Close(std::string& type)
     }
     return;
 }
-
 
 void InterfaceConfig::Restart()
 {
@@ -547,7 +561,6 @@ std::string RFLogEntry::get_zone_offset()
     return time_offset;
 }
 
-
 int  RFLogEntry:: get_log_status()
 {
     std::ifstream m_log_enabled(m_rf_log_enabled_path);
@@ -593,7 +606,6 @@ Json::Value RFLogEntry::get_log_entry_content()
     else
          return  aroot;
 }
-
 
 void RFLogEntry::set_log_entry(std::string& event_type,std::string& sensor_type,std::string& Serverity, std::string& message_content, int sensor_id)
 {
@@ -647,7 +659,6 @@ void RFLogEntry::set_log_entry(std::string& event_type,std::string& sensor_type,
     }
     return;
 }
-
 
 static ADbg* g_ADbg = NULL;
 
