@@ -39,10 +39,9 @@ namespace registries {
  *
  * @return String containing a json object with Intel RackScale registry messages.
  * */
-static std::string get_intel_rackscale_registry() {
+static std::string get_intel_rackscale_registry()
+{
     static std::string intel_rackscale_registry = R"({
-        "IntelRackScaleRegistry": [
-            {
                 "@odata.type": "#MessageRegistry.v1_0_0.MessageRegistry",
                 "Id": "Intel_RackScale.1.0.0",
                 "Name": "Intel RackScale Message Registry",
@@ -74,13 +73,10 @@ static std::string get_intel_rackscale_registry() {
                         "Resolution": "Correct the value for the property in the request body and resubmit the request."
                     }
                 }
-            }
-        ]
     })";
 
     return intel_rackscale_registry;
 }
-
 }
 }
 }

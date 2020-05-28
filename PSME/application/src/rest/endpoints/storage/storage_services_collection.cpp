@@ -30,7 +30,7 @@ namespace {
 json::Json make_prototype() {
     json::Json r(json::Json::value_t::object);
 
-    r[Common::ODATA_CONTEXT] = "/redfish/v1/$metadata#StorageServices";
+    r[Common::ODATA_CONTEXT] = "/redfish/v1/$metadata#StorageService.StorageService";
     r[Common::ODATA_ID] = json::Json::value_t::null;
     r[Common::ODATA_TYPE] = "#StorageServiceCollection.StorageServiceCollection";
     r[Common::NAME] = "Storage Services Collection";

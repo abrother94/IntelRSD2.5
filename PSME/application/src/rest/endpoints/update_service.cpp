@@ -29,7 +29,7 @@ namespace {
 json::Json make_prototype() {
     json::Json r(json::Json::value_t::object);
 
-    r[Common::ODATA_CONTEXT] = "/redfish/v1/$metadata#UpdateService/$entity";
+    r[Common::ODATA_CONTEXT] = "/redfish/v1/$metadata#UpdateService.UpdateService";
     r[Common::ODATA_TYPE] = "#UpdateService.v1_1_0.UpdateService";
     r[Common::ODATA_ID] = json::Json::value_t::null;
 

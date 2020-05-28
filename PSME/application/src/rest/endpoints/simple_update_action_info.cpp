@@ -37,6 +37,8 @@ json::Json make_prototype() {
 
     r[ActionInfo::PARAMETERS] = json::Json::value_t::array;
     r[Common::OEM] = json::Json::value_t::object;
+    r[Common::NAME] = "ActionInfo"; 
+    r[Common::ID] =  "ActionId"; 
 
     return r;
 }
@@ -72,7 +74,7 @@ void endpoint::SimpleUpdateActionInfo::get(const server::Request& request, serve
     json::Json targets = json::Json();
     targets[Common::NAME] = constants::UpdateService::TARGETS;
     targets[ActionInfo::REQUIRED] = true;
-    targets[ActionInfo::DATA_TYPE] = "Array";
+    targets[ActionInfo::DATA_TYPE] = "String";
 
     r[ActionInfo::PARAMETERS].push_back(std::move(image_uri));
     r[ActionInfo::PARAMETERS].push_back(std::move(transfer_protocol));
