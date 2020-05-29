@@ -96,12 +96,33 @@ public:
         m_type = component;
     }
 
+    const std::string&  get_event_content() const {
+        return m_event_content;
+    }
+
+    const std::string&  get_event_old_state() const 
+    {
+        return m_event_old_state;
+    }
+
+    void set_event_content(const std::string&  content) 
+    {
+        m_event_content = content;
+    }
+
+    void set_event_old_state(const std::string&  content) 
+    {
+        m_event_old_state = content;
+    }
 
 private:
     model::enums::Component m_type{model::enums::Component::None};
     model::enums::Notification m_notification{model::enums::Notification::Add};
     Uuid m_parent{};
     Uuid m_component{};
+
+    std::string m_event_content{};
+    std::string m_event_old_state{};
 };
 
 }

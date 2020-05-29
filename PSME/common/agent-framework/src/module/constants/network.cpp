@@ -74,6 +74,8 @@ constexpr const char EthernetSwitchPort::DCBX_STATE[];
 constexpr const char EthernetSwitchPort::COLLECTIONS[];
 constexpr const char EthernetSwitchPort::OEM[];
 
+constexpr const char EthernetSwitchPort::PORT_ID[];
+
 constexpr const char EthernetSwitch::SWITCH[];
 constexpr const char EthernetSwitch::STATUS[];
 constexpr const char EthernetSwitch::SWITCH_IDENTIFIER[];
@@ -166,6 +168,70 @@ constexpr const char NetworkQosAttribute::PRIORITY[];
 constexpr const char NetworkQosAttribute::PROTOCOL[];
 constexpr const char NetworkQosAttribute::PORT[];
 constexpr const char NetworkQosAttribute::BANDWIDTH_PERCENT[];
+
+constexpr const char TransInfo::SFP_VENDOR_NAME[];
+constexpr const char TransInfo::PART_NUMBER[];
+constexpr const char TransInfo::SERIAL_NUMBER[];
+constexpr const char TransInfo::MANUFACTURE_DATE[];
+
+constexpr const char TransInfo::TEMP_READING[];
+constexpr const char TransInfo::TEMP_UPPER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::TEMP_UPPER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::TEMP_UPPER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::TEMP_LOWER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::TEMP_LOWER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::TEMP_LOWER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::TEMP_STATUS_STATE[];
+constexpr const char TransInfo::TEMP_STATUS_HEALTH[];
+constexpr const char TransInfo::TEMP_STATUS_HEALTH_ROLL_UP[];
+
+constexpr const char TransInfo::BIAS_CURRENT_READING[];
+constexpr const char TransInfo::BIAS_CURRENT_UPPER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::BIAS_CURRENT_UPPER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::BIAS_CURRENT_UPPER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::BIAS_CURRENT_LOWER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::BIAS_CURRENT_LOWER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::BIAS_CURRENT_LOWER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::BIAS_CURRENT_STATUS_STATE[];
+constexpr const char TransInfo::BIAS_CURRENT_STATUS_HEALTH[];
+constexpr const char TransInfo::BIAS_CURRENT_STATUS_HEALTH_ROLL_UP[];
+
+constexpr const char TransInfo::VOLTAGE_READING[];
+constexpr const char TransInfo::VOLTAGE_UPPER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::VOLTAGE_UPPER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::VOLTAGE_UPPER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::VOLTAGE_LOWER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::VOLTAGE_LOWER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::VOLTAGE_LOWER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::VOLTAGE_STATUS_STATE[];
+constexpr const char TransInfo::VOLTAGE_STATUS_HEALTH[];
+constexpr const char TransInfo::VOLTAGE_STATUS_HEALTH_ROLL_UP[];
+
+constexpr const char TransInfo::TX_POWER_READING[];
+constexpr const char TransInfo::TX_POWER_UPPER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::TX_POWER_UPPER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::TX_POWER_UPPER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::TX_POWER_LOWER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::TX_POWER_LOWER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::TX_POWER_LOWER_THRESH_HOLD_NON_CRITICAL[];	
+constexpr const char TransInfo::TX_POWER_STATUS_STATE[];
+constexpr const char TransInfo::TX_POWER_STATUS_HEALTH[];
+constexpr const char TransInfo::TX_POWER_STATUS_HEALTH_ROLL_UP[];
+
+constexpr const char TransInfo::RX_POWER_READING[];
+constexpr const char TransInfo::RX_POWER_UPPER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::RX_POWER_UPPER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::RX_POWER_UPPER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::RX_POWER_LOWER_THRESH_HOLD_FATAL[];
+constexpr const char TransInfo::RX_POWER_LOWER_THRESH_HOLD_CRITICAL[];
+constexpr const char TransInfo::RX_POWER_LOWER_THRESH_HOLD_NON_CRITICAL[];
+constexpr const char TransInfo::RX_POWER_STATUS_STATE[];
+constexpr const char TransInfo::RX_POWER_STATUS_HEALTH[];
+constexpr const char TransInfo::RX_POWER_STATUS_HEALTH_ROLL_UP[];
+
+constexpr const char TransInfo::STATUS_STATE[];
+constexpr const char TransInfo::STATUS_HEALTH[];
+constexpr const char TransInfo::STATUS_HEALTH_ROLL_UP[];
 
 }
 }

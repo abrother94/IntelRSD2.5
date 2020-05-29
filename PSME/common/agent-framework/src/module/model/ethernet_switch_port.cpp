@@ -71,6 +71,7 @@ json::Json EthernetSwitchPort::to_json() const {
     result[literals::EthernetSwitchPort::DCBX_STATE] = get_dcbx_state();
     result[literals::EthernetSwitchPort::COLLECTIONS] = get_collections().to_json();
     result[literals::EthernetSwitchPort::OEM] = get_oem().to_json();
+    result[literals::EthernetSwitchPort::PORT_ID] = get_port_id(); 
     return result;
 }
 
@@ -108,6 +109,7 @@ EthernetSwitchPort EthernetSwitchPort::from_json(const json::Json& json) {
     port.set_dcbx_state(json[literals::EthernetSwitchPort::DCBX_STATE]);
     port.set_collections(Collections::from_json(json[literals::EthernetSwitchPort::COLLECTIONS]));
     port.set_oem(attribute::Oem::from_json(json[literals::EthernetSwitchPort::OEM]));
+    port.set_port_id(json[literals::EthernetSwitchPort::PORT_ID]);
 
     return port;
 }

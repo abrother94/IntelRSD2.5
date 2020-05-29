@@ -31,14 +31,12 @@
 #include <json/json.h>
 #include <json/json.hpp>
 #include <mutex>
-#include <acc_net_helper/acc_net_helper.hpp>
 
 #define FF3(readin) float(int(readin * 1000))
 namespace acc_onlp_helper
 {
 
 using namespace std;
-using namespace acc_net_helper;
 
 static constexpr const int SIZE_EEPROM = 600;
 static constexpr const char STD_SEC_PATH[] = "/usr/local/bin/mod_conf/";
@@ -148,7 +146,6 @@ public:
     static std::vector<std::string> get_Event_Resouce_Alert();
     static void Clear_Event_Resouce_Alert();
     static void Clear_Event_Port_Resouce_Alert();
-    RFLogEntry Entry = {};
 };
 
 class Thermal_Info : public Dev_Info
@@ -310,16 +307,16 @@ public:
     int get_tx_status(std::string in_tx_sysfs);
 };
 
-class Switch
+class Acc_Switch
 {
 public:
-    Switch()
+    Acc_Switch()
     {
         get_basic_info();
         get_board_info();
     }
-    HelperTools m_help_tools = {};
-    RFLogEntry Entry = {};
+    //HelperTools m_help_tools = {};
+    //RFLogEntry Entry = {};
 
     static std::vector<std::string> m_Event_Resouce_Add;
     static std::vector<std::string> m_Event_Resouce_Remove;
@@ -335,7 +332,7 @@ public:
     static void clean_Event_Resource_Event();
     static void clean_Event_Port_Resource_Event();
 
-    ~Switch();
+    ~Acc_Switch();
 
     enum Fan_Content
     {
@@ -395,7 +392,7 @@ public:
     int get_port_num() { return m_port_max_num; };
 
 
-    static Switch &get_instance();
+    static Acc_Switch &get_instance();
 
     static void increase_thermal_num()
     {

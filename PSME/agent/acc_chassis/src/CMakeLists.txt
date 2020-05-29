@@ -62,5 +62,12 @@ target_link_libraries(acc-psme-chassis
     ${CURL_LIBRARIES}
     ${NET_LIBRARIES}
     ${SAFESTRING_LIBRARIES}
+    ${ACC_ONLP_HELPER_LIBRARIES}    
+    ${ACC_NET_HELPER_LIBRARIES}    
+    ${LIBONLP}
+    ${LIBONLP_PF}
+    ${LIBONLP_PF_DF}    
+    jsoncpp
+    json-cxx
     md5
 )

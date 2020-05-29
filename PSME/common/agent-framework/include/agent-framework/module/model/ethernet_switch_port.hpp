@@ -45,7 +45,7 @@ public:
     /*!
      * @brief construct an object of class EthernetSwitchPort from JSON
      *
-     * @param json the json::Json deserialized to object
+     * @param json the json::json deserialized to object
      *
      * @return the newly constructed EthernetSwitchPort object
      */
@@ -55,7 +55,7 @@ public:
     /*!
      * @brief transform the object to JSon
      *
-     * @return the object serialized to json::Json
+     * @return the object serialized to json::json
      */
     json::Json to_json() const;
 
@@ -610,6 +610,71 @@ public:
         m_is_physical_or_up = state;
     }
 
+   /*!
+     * @brief Set port id
+     * @param[in] port_id switch port identifier
+     * */
+    void set_port_id(const OptionalField<std::uint32_t> &port_id)
+    {
+        m_port_id = port_id;
+    }
+
+    /*!
+     * @brief Get port id
+     * @return Port id of switch port
+     * */
+    const OptionalField<std::uint32_t> &get_port_id() const
+    {
+        return m_port_id;
+    }
+
+   /*!
+     * @brief Returns trans info.
+     * @return Reference to Trans.
+     * */
+    const attribute::TransInfo &get_trans_info() const
+    {
+        return m_trans_info;
+    }
+
+    /*!
+     * @brief Returns pon trans rx_pwr info.
+     * @return Reference to Onu_Trans_Rx_Pwr_Info 
+     * */
+    const attribute::Onu_Trans_Rx_Pwr_Info &get_pon_trans_rx_pwr_info() const
+    {
+        return m_pon_trans_rx_pwr_info;
+    }
+
+    /*!
+     * @brief Returns trans info. in jason format
+     * @return Reference to Trans.
+     * */
+    json::Json get_trans_info_json() const;
+
+    /*!
+     * @brief Returns pon rx pwr trans info. in jason format
+     * @return Reference to Trans.
+     * */
+    json::Json get_pon_trans_rx_pwr_info_json() const;
+
+    /*!
+     * @brief Set  trans info.
+     * @param[in] trans_info
+     * */
+    void set_trans_info(const attribute::TransInfo &trans_info)
+    {
+        m_trans_info = trans_info;
+    }
+
+    /*!
+     * @brief Set pon trans rx_pwr info.
+     * @param[in] Onu_Trans_Rx_Pwr_Info 
+     * */
+    void set_trans_rx_pwr_info(const attribute::Onu_Trans_Rx_Pwr_Info &trans_info)
+    {
+        m_pon_trans_rx_pwr_info = trans_info;
+    }
 private:
 
     OptionalField<std::string> m_port_identifier{};
@@ -649,6 +714,9 @@ private:
     static const enums::CollectionName collection_name;
     static const enums::Component component;
 
+    OptionalField<std::uint32_t> m_port_id{};
+    attribute::TransInfo m_trans_info{};
+    attribute::Onu_Trans_Rx_Pwr_Info m_pon_trans_rx_pwr_info{};    
 };
 
 }

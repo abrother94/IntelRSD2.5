@@ -38,12 +38,14 @@ include_directories(
     ${AGENT_FRAMEWORK_INCLUDE_DIRS}
     ${NET_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${ACC_ONLP_HELPER_INCLUDE_DIRS}
 )
 
 include_directories(SYSTEM
     ${SAFESTRING_INCLUDE_DIRS}
     ${UUID_INCLUDE_DIRS}
     ${MD5_INCLUDE_DIRS}
+    ../../common/json-cxx/include/
 )
 
 add_subdirectory(src)

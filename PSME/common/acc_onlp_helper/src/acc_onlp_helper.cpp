@@ -1,10 +1,12 @@
 #include "acc_onlp_helper/acc_onlp_helper.hpp"
+#include "acc_net_helper/acc_net_helper.hpp"
 #include "acc_onlp_helper/asxvolt16.hpp"
 #include "acc_onlp_helper/asgvolt64.hpp"
 #include "acc_onlp_helper/as5916_54xks.hpp"
 #include "acc_onlp_helper/as5916_54xk.hpp"
 
 using namespace acc_onlp_helper;
+using namespace acc_net_helper;
 
 /*Fon onlp*/
 #ifdef __cplusplus
@@ -42,11 +44,11 @@ namespace acc_onlp_helper
 signed long get_value_from_pointer(signed char *ptr, int size);
 unsigned long get_value_from_pointer_u(unsigned char *ptr, int size);
 
-int Switch::m_fan_max_num = 0;
-int Switch::m_port_max_num = 0;
-int Switch::m_thermal_sen_max_num = 0;
-int Switch::m_psu_max_num = 0;
-int Switch::m_max_cpu_num = 0;
+int Acc_Switch::m_fan_max_num = 0;
+int Acc_Switch::m_port_max_num = 0;
+int Acc_Switch::m_thermal_sen_max_num = 0;
+int Acc_Switch::m_psu_max_num = 0;
+int Acc_Switch::m_max_cpu_num = 0;
 
 #define UNUSED(x) (void)(x)
 
@@ -64,15 +66,15 @@ static int iterate_oids_callback__(onlp_oid_t oid, void *cookie)
     {
     case ONLP_OID_TYPE_THERMAL:
         printf("thermal,Thermal %d,%d\n", id, thermal++);
-        Switch::increase_thermal_num();
+        Acc_Switch::increase_thermal_num();
         break;
     case ONLP_OID_TYPE_FAN:
         printf("fan,Fan %d,%d\n", id, fan++);
-        Switch::increase_fan_num();
+        Acc_Switch::increase_fan_num();
         break;
     case ONLP_OID_TYPE_PSU:
         printf("psu,PSU %d,%d\n", id, psu++);
-        Switch::increase_psu_num();
+        Acc_Switch::increase_psu_num();
         break;
     default:
         printf("non[%d] \r\n", type);
@@ -1338,12 +1340,12 @@ bool e_oom::get_conf()
     }
 }
 
-static Switch *g_Switch = NULL;
+static Acc_Switch *g_Switch = NULL;
 
 //For print debug //
 auto &gADbg = ADbg::get_instance();
 
-void Switch::get_board_info()
+void Acc_Switch::get_board_info()
 {
     std::lock_guard<std::mutex> lock{m_data_mutex};
     gADbg.acc_printf("/////////start get_board_info////////////\r\n");
@@ -1563,7 +1565,7 @@ void Switch::get_board_info()
     }
 }
 
-void Switch::get_port_present_info()
+void Acc_Switch::get_port_present_info()
 {
     try
     {
@@ -1615,7 +1617,7 @@ void Switch::get_port_present_info()
     }
 }
 
-void Switch::get_port_oom_info()
+void Acc_Switch::get_port_oom_info()
 {
     try
     {
@@ -1683,7 +1685,7 @@ void Switch::get_port_oom_info()
     }
 }
 
-void Switch::get_thermal_info()
+void Acc_Switch::get_thermal_info()
 {
     try
     {
@@ -1741,7 +1743,7 @@ void Switch::get_thermal_info()
     }
 }
 
-int Switch::get_port_tx_status(int port)
+int Acc_Switch::get_port_tx_status(int port)
 {
     try
     {
@@ -1767,9 +1769,9 @@ int Switch::get_port_tx_status(int port)
     }
 }
 
-void Switch::set_port_tx_status(int port, bool tx_status)
+void Acc_Switch::set_port_tx_status(int port, bool tx_status)
 {
-    printf("Switch::set_port_tx_status port[%d] tx_status[%d]\r\n", port, tx_status);
+    printf("Acc_Switch::set_port_tx_status port[%d] tx_status[%d]\r\n", port, tx_status);
     try
     {
         std::lock_guard<std::mutex> lock{m_data_mutex};
@@ -1826,7 +1828,6 @@ void Psu_Info::set_info(int ID, std::string Model, std::string SN, int Vin, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Power Supply / Converter");
                 std::string message("PSU UnavailableOffline");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
             else if (present && (Pout > 0))
             {
@@ -1846,7 +1847,6 @@ void Psu_Info::set_info(int ID, std::string Model, std::string SN, int Vin, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Power Supply / Converter");
                 std::string message("PSU absent");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
             else
             {
@@ -1858,7 +1858,6 @@ void Psu_Info::set_info(int ID, std::string Model, std::string SN, int Vin, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Power Supply / Converter");
                 std::string message("PSU absent");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
         }
 
@@ -1895,7 +1894,6 @@ void Fan_Info::set_info(int ID, std::string Model, std::string SN, int RPM, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Fan");
                 std::string message("Fan plug in but not SPIN");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
 
                 std::string message_event = std::string("Fan : ") + std::to_string(ID) + std::string("not SPIN.");
                 if (!m_fan_alert)
@@ -1923,7 +1921,6 @@ void Fan_Info::set_info(int ID, std::string Model, std::string SN, int RPM, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Fan");
                 std::string message("System fan absent");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
             else
             {
@@ -1945,7 +1942,6 @@ void Fan_Info::set_info(int ID, std::string Model, std::string SN, int RPM, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Fan");
                 std::string message("PSU plug in but not no power core plug in");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
             else if (present && (RPM > 0))
             {
@@ -1965,7 +1961,6 @@ void Fan_Info::set_info(int ID, std::string Model, std::string SN, int RPM, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Fan");
                 std::string message("PSU fan absent");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
             else
             {
@@ -1977,7 +1972,6 @@ void Fan_Info::set_info(int ID, std::string Model, std::string SN, int RPM, int 
                 std::string servrity("Warning");
                 std::string sensor_type("Fan");
                 std::string message("PSU fan absent");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
             }
         }
         else
@@ -2075,7 +2069,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("CPU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over warning temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----CPU_Sensor-----Warning--\r\n");
 
                 if (m_cpu_thermal_alert != 1)
@@ -2096,7 +2089,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("CPU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over error temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----CPU_Sensor-----Warning--\r\n");
 
                 if (m_cpu_thermal_alert != 4)
@@ -2116,7 +2108,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("CPU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over fatal temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----CPU_Sensor-----Critical--\r\n");
 
                 if (m_cpu_thermal_alert != 5)
@@ -2147,7 +2138,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("SYSTEM Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over warning temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----SYSTEM_Sensor-----Warning--\r\n");
 
                 std::string message_event = std::string("SYSTEM Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) +
@@ -2171,7 +2161,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("SYSTEM Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over error temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----SYSTEM_Sensor-----Warning--\r\n");
 
                 std::string message_event = std::string("SYSTEM Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) +
@@ -2194,7 +2183,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("SYSTEM_Sensor Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over fatal temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----SYSTEM_Sensor-----Critical--\r\n");
 
                 std::string message_event = std::string("SYSTEM Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) +
@@ -2233,7 +2221,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("PSU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over warning temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----PSU_Sensor-----Warning--\r\n");
 
                 std::string message_event = std::string("PSU Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.  Over warning temperature.");
@@ -2256,7 +2243,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("PSU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over error temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----PSU_Sensor-----Warning--\r\n");
 
                 std::string message_event = std::string("PSU Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.  Over error temperature.");
@@ -2278,7 +2264,6 @@ void Thermal_Info::set_info(int ID, int Current_Temperature, int Warning, int Er
                 std::string sensor_type("Temperature");
                 std::string message;
                 message = std::string("PSU Thermal is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.Over fatal temperature.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, ID);
                 gADbg.acc_printf("set_info-----PSU_Sensor-----Critical--\r\n");
 
                 std::string message_event = std::string("PSU Thermal ") + std::to_string(ID) + std::string(" is ") + std::to_string(m_Current_Temperature / 1000) + std::string(" degrees.  Over fatal temperature.");
@@ -2421,7 +2406,7 @@ int Port_Info::get_tx_status(std::string in_tx_sys_path)
 #endif
 }
 
-void Switch::get_psu_info()
+void Acc_Switch::get_psu_info()
 {
     try
     {
@@ -2488,12 +2473,12 @@ void Switch::get_psu_info()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_psu_info() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_psu_info() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-int Switch::get_psu_info_by_(int psuid, Psu_Content id)
+int Acc_Switch::get_psu_info_by_(int psuid, Psu_Content id)
 {
     try
     {
@@ -2542,12 +2527,12 @@ int Switch::get_psu_info_by_(int psuid, Psu_Content id)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_psu_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_psu_info_by_() - exception : " << e.what() << std::endl;
         return 0;
     }
 }
 
-std::string Switch::get_psu_info_by_(int psuid, std::string type)
+std::string Acc_Switch::get_psu_info_by_(int psuid, std::string type)
 {
     try
     {
@@ -2577,12 +2562,12 @@ std::string Switch::get_psu_info_by_(int psuid, std::string type)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch string get_psu_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch string get_psu_info_by_() - exception : " << e.what() << std::endl;
         return "na";
     }
 }
 
-std::string Switch::get_thermal_info_by_(int thermalid, std::string type)
+std::string Acc_Switch::get_thermal_info_by_(int thermalid, std::string type)
 {
     try
     {
@@ -2608,12 +2593,12 @@ std::string Switch::get_thermal_info_by_(int thermalid, std::string type)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch string get_thermal_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch string get_thermal_info_by_() - exception : " << e.what() << std::endl;
         return "na";
     }
 }
 
-int Switch::get_thermal_info_by_(int thermalid, Thermal_Content id)
+int Acc_Switch::get_thermal_info_by_(int thermalid, Thermal_Content id)
 {
     try
     {
@@ -2656,12 +2641,12 @@ int Switch::get_thermal_info_by_(int thermalid, Thermal_Content id)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch  get_thermal_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch  get_thermal_info_by_() - exception : " << e.what() << std::endl;
         return 0;
     }
 }
 
-int Switch::get_port_info_by_(int portid, Port_Content id)
+int Acc_Switch::get_port_info_by_(int portid, Port_Content id)
 {
     try
     {
@@ -2697,12 +2682,12 @@ int Switch::get_port_info_by_(int portid, Port_Content id)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_port_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_port_info_by_() - exception : " << e.what() << std::endl;
         return 0;
     }
 }
 
-json::Value Switch::get_port_trans_info_by_(int portid)
+json::Value Acc_Switch::get_port_trans_info_by_(int portid)
 {
     try
     {
@@ -2724,12 +2709,12 @@ json::Value Switch::get_port_trans_info_by_(int portid)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_port_trans_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_port_trans_info_by_() - exception : " << e.what() << std::endl;
         return json::Value::Type::NIL;
     }
 }
 
-void Switch::update_transceivers_oom_event()
+void Acc_Switch::update_transceivers_oom_event()
 {
     try
     {
@@ -2748,12 +2733,12 @@ void Switch::update_transceivers_oom_event()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch update_transceivers_oom_event() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch update_transceivers_oom_event() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-void Switch::update_port_present_event()
+void Acc_Switch::update_port_present_event()
 {
     try
     {
@@ -2774,7 +2759,6 @@ void Switch::update_port_present_event()
                     std::string servrity("OK");
                     std::string sensor_type("Entity Presence");
                     std::string message("Port unplug.");
-                    Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                     std::string message_event = std::string("Port ") + std::to_string(id + 1) + std::string(" Plug Out.");
                     m_Event_Port_Resouce_Remove.push_back(message_event);
@@ -2785,7 +2769,6 @@ void Switch::update_port_present_event()
                     std::string servrity("OK");
                     std::string sensor_type("Entity Presence");
                     std::string message("Port plug in.");
-                    Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                     std::string message_event = std::string("Port ") + std::to_string(id + 1) + std::string(" Plug In.");
                     m_Event_Port_Resouce_Add.push_back(message_event);
@@ -2806,7 +2789,6 @@ void Switch::update_port_present_event()
                     std::string servrity("OK");
                     std::string sensor_type("Entity Presence");
                     std::string message("Port unplug.");
-                    Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                     std::string message_event = std::string("Port ") + std::to_string(id + 1) + std::string(" Plug Out.");
                     m_Event_Port_Resouce_Remove.push_back(message_event);
@@ -2817,7 +2799,6 @@ void Switch::update_port_present_event()
                     std::string servrity("OK");
                     std::string sensor_type("Entity Presence");
                     std::string message("Port plug in.");
-                    Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                     std::string message_event = std::string("Port ") + std::to_string(id + 1) + std::string(" Plug In.");
                     m_Event_Port_Resouce_Add.push_back(message_event);
@@ -2836,12 +2817,12 @@ void Switch::update_port_present_event()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch update_port_present_event() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch update_port_present_event() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-void Switch::update_psu_present_event()
+void Acc_Switch::update_psu_present_event()
 {
     try
     {
@@ -2861,7 +2842,6 @@ void Switch::update_psu_present_event()
                 std::string servrity("OK");
                 std::string sensor_type("Power Supply / Converter");
                 std::string message("PSU unplug.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                 std::string message_event = std::string("PSU ") + std::to_string(id + 1) + std::string(" Plug Out.");
                 m_Event_Resouce_Remove.push_back(message_event);
@@ -2872,7 +2852,6 @@ void Switch::update_psu_present_event()
                 std::string servrity("OK");
                 std::string sensor_type("Power Supply / Converter");
                 std::string message("PSU plug in.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                 std::string message_event = std::string("PSU ") + std::to_string(id + 1) + std::string(" Plug In.");
                 m_Event_Resouce_Add.push_back(message_event);
@@ -2884,12 +2863,12 @@ void Switch::update_psu_present_event()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch update_psu_present_event() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch update_psu_present_event() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-void Switch::get_fan_info()
+void Acc_Switch::get_fan_info()
 {
     try
     {
@@ -2941,12 +2920,12 @@ void Switch::get_fan_info()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_fan_info() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_fan_info() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-int Switch::get_fan_info_by_(int fanid, Fan_Content id)
+int Acc_Switch::get_fan_info_by_(int fanid, Fan_Content id)
 {
     try
     {
@@ -2984,12 +2963,12 @@ int Switch::get_fan_info_by_(int fanid, Fan_Content id)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_fan_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_fan_info_by_() - exception : " << e.what() << std::endl;
         return 0;
     }
 }
 
-std::string Switch::get_fan_info_by_(int fanid, std::string type)
+std::string Acc_Switch::get_fan_info_by_(int fanid, std::string type)
 {
     try
     {
@@ -3014,12 +2993,12 @@ std::string Switch::get_fan_info_by_(int fanid, std::string type)
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch string get_fan_info_by_() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch string get_fan_info_by_() - exception : " << e.what() << std::endl;
         return "na";
     }
 }
 
-void Switch::update_fan_present_event()
+void Acc_Switch::update_fan_present_event()
 {
     try
     {
@@ -3038,7 +3017,6 @@ void Switch::update_fan_present_event()
                 std::string servrity("OK");
                 std::string sensor_type("Fan");
                 std::string message("FAN unplug.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                 std::string message_event = std::string("Fan ") + std::to_string(id + 1) + std::string(" Plug Out.");
                 m_Event_Resouce_Remove.push_back(message_event);
@@ -3049,7 +3027,6 @@ void Switch::update_fan_present_event()
                 std::string servrity("OK");
                 std::string sensor_type("Fan");
                 std::string message("FAN plug in.");
-                Entry.set_log_entry(event, sensor_type, servrity, message, id + 1);
 
                 std::string message_event = std::string("Fan ") + std::to_string(id + 1) + std::string(" Plug In.");
                 m_Event_Resouce_Add.push_back(message_event);
@@ -3061,12 +3038,12 @@ void Switch::update_fan_present_event()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch update_fan_present_event() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch update_fan_present_event() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-void Switch::update_thermal_present_event()
+void Acc_Switch::update_thermal_present_event()
 {
     try
     {
@@ -3101,12 +3078,12 @@ void Switch::update_thermal_present_event()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch update_thermal_present_event() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch update_thermal_present_event() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-void Switch::get_basic_info()
+void Acc_Switch::get_basic_info()
 {
     try
     {
@@ -3193,12 +3170,12 @@ void Switch::get_basic_info()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_basic_info() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_basic_info() - exception : " << e.what() << std::endl;
         return;
     }
 }
 
-Switch::~Switch()
+Acc_Switch::~Acc_Switch()
 {
     for (vector<Thermal_Info *>::iterator pObj = m_vec_Thermal_Info.begin(); pObj != m_vec_Thermal_Info.end(); ++pObj)
     {
@@ -3221,7 +3198,7 @@ Switch::~Switch()
     }
 }
 
-Switch &Switch::get_instance()
+Acc_Switch &Acc_Switch::get_instance()
 {
     try
     {
@@ -3255,19 +3232,19 @@ Switch &Switch::get_instance()
             else
             {
                 printf("x86-64-accton-generic\r\n");
-                g_Switch = new Switch();
+                g_Switch = new Acc_Switch();
             }
         }
         return *g_Switch;
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_basic_info() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_basic_info() - exception : " << e.what() << std::endl;
         return *g_Switch;
     }
 }
 
-void Switch::get_per_port_sys_file()
+void Acc_Switch::get_per_port_sys_file()
 {
     try
     {
@@ -3301,7 +3278,7 @@ void Switch::get_per_port_sys_file()
     }
     catch (const std::exception &e)
     {
-        std::cout << "Switch get_per_port_sys_file() - exception : " << e.what() << std::endl;
+        std::cout << "Acc_Switch get_per_port_sys_file() - exception : " << e.what() << std::endl;
     }
 }
 
@@ -3326,45 +3303,45 @@ void Dev_Info::Clear_Event_Port_Resouce_Alert()
     return;
 }
 
-std::vector<std::string> Switch::m_Event_Resouce_Add = {};
+std::vector<std::string> Acc_Switch::m_Event_Resouce_Add = {};
 
-std::vector<std::string> Switch::get_Event_Resouce_Add()
+std::vector<std::string> Acc_Switch::get_Event_Resouce_Add()
 {
     return m_Event_Resouce_Add;
 }
 
-std::vector<std::string> Switch::m_Event_Port_Resouce_Add = {};
+std::vector<std::string> Acc_Switch::m_Event_Port_Resouce_Add = {};
 
-std::vector<std::string> Switch::get_Event_Port_Resouce_Add()
+std::vector<std::string> Acc_Switch::get_Event_Port_Resouce_Add()
 {
     return m_Event_Port_Resouce_Add;
 }
 
-std::vector<std::string> Switch::m_Event_Resouce_Remove = {};
+std::vector<std::string> Acc_Switch::m_Event_Resouce_Remove = {};
 
-std::vector<std::string> Switch::get_Event_Resouce_Remove()
+std::vector<std::string> Acc_Switch::get_Event_Resouce_Remove()
 {
     return m_Event_Resouce_Remove;
 }
 
-std::vector<std::string> Switch::m_Event_Port_Resouce_Remove = {};
+std::vector<std::string> Acc_Switch::m_Event_Port_Resouce_Remove = {};
 
-std::vector<std::string> Switch::get_Event_Port_Resouce_Remove()
+std::vector<std::string> Acc_Switch::get_Event_Port_Resouce_Remove()
 {
     return m_Event_Port_Resouce_Remove;
 }
 
-std::vector<std::string> Switch::get_Event_Resouce_Alert()
+std::vector<std::string> Acc_Switch::get_Event_Resouce_Alert()
 {
     return Dev_Info::get_Event_Resouce_Alert();
 }
 
-std::vector<std::string> Switch::get_Event_Port_Resouce_Alert()
+std::vector<std::string> Acc_Switch::get_Event_Port_Resouce_Alert()
 {
     return Dev_Info::get_Event_Resouce_Alert();
 }
 
-void Switch::clean_Event_Resource_Event()
+void Acc_Switch::clean_Event_Resource_Event()
 {
     m_Event_Resouce_Add.clear();
     m_Event_Resouce_Remove.clear();
@@ -3372,7 +3349,7 @@ void Switch::clean_Event_Resource_Event()
     return;
 }
 
-void Switch::clean_Event_Port_Resource_Event()
+void Acc_Switch::clean_Event_Port_Resource_Event()
 {
     m_Event_Port_Resouce_Add.clear();
     m_Event_Port_Resouce_Remove.clear();

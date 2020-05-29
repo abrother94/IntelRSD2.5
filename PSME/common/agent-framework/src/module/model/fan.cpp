@@ -40,6 +40,13 @@ json::Json Fan::to_json() const {
     result[literals::Fan::PHYSICAL_CONTEXT] = get_physical_context();
     result[literals::Fan::FRU_INFO] = get_fru_info().to_json();
     result[literals::Fan::OEM] = get_oem().to_json();
+
+    result[literals::Fan::CHASSIS] = get_chassis();    
+    result[literals::Fan::FAN_ID]  = get_fan_id();
+    result[literals::Fan::FAN_TYPE] = get_fan_type();
+    result[literals::Fan::STATUS_HEALTH] = get_status_health();
+    result[literals::Fan::STATUS_STATE] = get_status_state();
+
     return result;
 }
 
@@ -52,6 +59,12 @@ Fan Fan::from_json(const json::Json& json) {
     fan.set_physical_context(json[literals::Fan::PHYSICAL_CONTEXT]);
     fan.set_fru_info(attribute::FruInfo::from_json(json[literals::Fan::FRU_INFO]));
     fan.set_oem(attribute::Oem::from_json(json[literals::Fan::OEM]));
+
+    fan.set_chassis(json[literals::Fan::CHASSIS]);   
+    fan.set_fan_id(json[literals::Fan::FAN_ID]);       
+    fan.set_fan_type(json[literals::Fan::FAN_TYPE]);          
+    fan.set_status_health(json[literals::Fan::STATUS_HEALTH]);       
+    fan.set_status_state(json[literals::Fan::STATUS_STATE]); 
 
     return fan;
 }

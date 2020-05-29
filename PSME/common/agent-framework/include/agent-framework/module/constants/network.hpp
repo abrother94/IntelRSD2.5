@@ -89,6 +89,7 @@ public:
     static constexpr const char DCBX_STATE[] = "dcbxState";
     static constexpr const char COLLECTIONS[] = "collections";
     static constexpr const char OEM[] = "oem";
+    static constexpr const char PORT_ID[] = "portId";
 };
 
 /*!
@@ -236,6 +237,81 @@ public:
     static constexpr const char PROTOCOL[] = "protocol";
     static constexpr const char PORT[] = "port";
     static constexpr const char BANDWIDTH_PERCENT[] = "bandwidthPercent";
+};
+
+
+class TransInfo {
+public:
+    static constexpr const char NEIGHBOR_INFO[] = "neighborInfo";
+    static constexpr const char SWITCH_IDENTIFIER[] = "switchIdentifier";
+    static constexpr const char PORT_IDENTIFIER[] = "portIdentifier";
+    static constexpr const char CABLE_ID[] = "cableId";
+
+    static constexpr const char SFP_VENDOR_NAME[] = "SfpVendorName";
+    static constexpr const char PART_NUMBER[] = "PartNumber";
+    static constexpr const char SERIAL_NUMBER[] = "SerialNumber";
+    static constexpr const char MANUFACTURE_DATE[] = "ManufactureDate";
+	
+    static constexpr const char TEMP_READING[] = "TemperatureReading";
+    static constexpr const char TEMP_UPPER_THRESH_HOLD_FATAL[] = "TemperatureUpperThresholdFatal";
+    static constexpr const char TEMP_UPPER_THRESH_HOLD_CRITICAL[] = "TemperatureUpperThresholdCritical";
+    static constexpr const char TEMP_UPPER_THRESH_HOLD_NON_CRITICAL[] = "TemperatureUpperThresholdNonCritical";
+    static constexpr const char TEMP_LOWER_THRESH_HOLD_FATAL[] = "TemperatureLowerThresholdFatal";
+    static constexpr const char TEMP_LOWER_THRESH_HOLD_CRITICAL[] = "TemperatureLowerThresholdCritical";
+    static constexpr const char TEMP_LOWER_THRESH_HOLD_NON_CRITICAL[] = "TemperatureLowerThresholdNonCritical";
+    static constexpr const char TEMP_STATUS_STATE[] = "TemperatureState";
+    static constexpr const char TEMP_STATUS_HEALTH[] ="TemperatureHealth";
+    static constexpr const char TEMP_STATUS_HEALTH_ROLL_UP[] = "TemperatureHealthRollup";	
+
+    static constexpr const char BIAS_CURRENT_READING[] = "BiasCurrentReading";
+    static constexpr const char BIAS_CURRENT_UPPER_THRESH_HOLD_FATAL[] = "BiasCurrentUpperThresholdFatal";
+    static constexpr const char BIAS_CURRENT_UPPER_THRESH_HOLD_CRITICAL[] = "BiasCurrentUpperThresholdCritical";
+    static constexpr const char BIAS_CURRENT_UPPER_THRESH_HOLD_NON_CRITICAL[] = "BiasCurrentUpperThresholdNonCritical";
+    static constexpr const char BIAS_CURRENT_LOWER_THRESH_HOLD_FATAL[] = "BiasCurrentLowerThresholdFatal";
+    static constexpr const char BIAS_CURRENT_LOWER_THRESH_HOLD_CRITICAL[] = "BiasCurrentLowerThresholdCritical";
+    static constexpr const char BIAS_CURRENT_LOWER_THRESH_HOLD_NON_CRITICAL[] = "BiasCurrentLowerThresholdNonCritical";
+    static constexpr const char BIAS_CURRENT_STATUS_STATE[] = "BiasCurrentState";
+    static constexpr const char BIAS_CURRENT_STATUS_HEALTH[] ="BiasCurrentHealth";
+    static constexpr const char BIAS_CURRENT_STATUS_HEALTH_ROLL_UP[] = "BiasCurrentHealthRollup";		
+
+    static constexpr const char VOLTAGE_READING[] = "VoltageReading";
+    static constexpr const char VOLTAGE_UPPER_THRESH_HOLD_FATAL[] = "VoltageUpperThresholdFatal";
+    static constexpr const char VOLTAGE_UPPER_THRESH_HOLD_CRITICAL[] = "VoltageUpperThresholdCritical";
+    static constexpr const char VOLTAGE_UPPER_THRESH_HOLD_NON_CRITICAL[] = "VoltageUpperThresholdNonCritical";
+    static constexpr const char VOLTAGE_LOWER_THRESH_HOLD_FATAL[] = "VoltageLowerThresholdFatal";
+    static constexpr const char VOLTAGE_LOWER_THRESH_HOLD_CRITICAL[] = "VoltageLowerThresholdCritical";
+    static constexpr const char VOLTAGE_LOWER_THRESH_HOLD_NON_CRITICAL[] = "VoltageLowerThresholdNonCritical";
+    static constexpr const char VOLTAGE_STATUS_STATE[] = "VoltageState";
+    static constexpr const char VOLTAGE_STATUS_HEALTH[] ="VoltageHealth";
+    static constexpr const char VOLTAGE_STATUS_HEALTH_ROLL_UP[] = "VoltageHealthRollup";		
+	
+
+    static constexpr const char TX_POWER_READING[] = "TxPowerReading";
+    static constexpr const char TX_POWER_UPPER_THRESH_HOLD_FATAL[] = "TxPowerUpperThresholdFatal";
+    static constexpr const char TX_POWER_UPPER_THRESH_HOLD_CRITICAL[] = "TxPowerUpperThresholdCritical";
+    static constexpr const char TX_POWER_UPPER_THRESH_HOLD_NON_CRITICAL[] = "TxPowerUpperThresholdNonCritical";
+    static constexpr const char TX_POWER_LOWER_THRESH_HOLD_FATAL[] = "TxPowerLowerThresholdFatal";
+    static constexpr const char TX_POWER_LOWER_THRESH_HOLD_CRITICAL[] = "TxPowerLowerThresholdCritical";
+    static constexpr const char TX_POWER_LOWER_THRESH_HOLD_NON_CRITICAL[] = "TxPowerLowerThresholdNonCritical";	
+    static constexpr const char TX_POWER_STATUS_STATE[] = "TxPowerState";
+    static constexpr const char TX_POWER_STATUS_HEALTH[] ="TxPowerHealth";
+    static constexpr const char TX_POWER_STATUS_HEALTH_ROLL_UP[] = "TxPowerHealthRollup";	
+
+    static constexpr const char RX_POWER_READING[] = "RxPowerReading";
+    static constexpr const char RX_POWER_UPPER_THRESH_HOLD_FATAL[] = "RxPowerUpperThresholdFatal";
+    static constexpr const char RX_POWER_UPPER_THRESH_HOLD_CRITICAL[] = "RxPowerUpperThresholdCritical";
+    static constexpr const char RX_POWER_UPPER_THRESH_HOLD_NON_CRITICAL[] = "RxPowerUpperThresholdNonCritical";
+    static constexpr const char RX_POWER_LOWER_THRESH_HOLD_FATAL[] = "RxPowerLowerThresholdFatal";
+    static constexpr const char RX_POWER_LOWER_THRESH_HOLD_CRITICAL[] = "RxPowerLowerThresholdCritical";
+    static constexpr const char RX_POWER_LOWER_THRESH_HOLD_NON_CRITICAL[] = "RxPowerLowerThresholdNonCritical";	
+    static constexpr const char RX_POWER_STATUS_STATE[] = "RxPowerState";
+    static constexpr const char RX_POWER_STATUS_HEALTH[] ="RxPowerHealth";
+    static constexpr const char RX_POWER_STATUS_HEALTH_ROLL_UP[] = "RxPowerHealthRollup";
+
+
+    static constexpr const char STATUS_STATE[] = "State";
+    static constexpr const char STATUS_HEALTH[] ="Health";
+    static constexpr const char STATUS_HEALTH_ROLL_UP[] = "HealthRollup";	
 };
 
 }

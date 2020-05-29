@@ -39,6 +39,15 @@ json::Json ThermalZone::to_json() const {
     result[literals::ThermalZone::DESIRED_SPEED_PWM] = get_desired_speed_pwm();
     result[literals::ThermalZone::COLLECTIONS] = get_collections().to_json();
     result[literals::ThermalZone::OEM] = get_oem().to_json();
+
+    result[literals::ThermalZone::CHASSIS] = get_chassis();    
+    result[literals::ThermalZone::TZ_ID]  = get_tz_id();    
+    result[literals::ThermalZone::STATUS_HEALTH] = get_status_health();
+    result[literals::ThermalZone::STATUS_STATE] = get_status_state();	
+    result[literals::ThermalZone::WARNING_TEMP] = get_warning_temp();
+    result[literals::ThermalZone::ERROR_TEMP] = get_error_temp();
+    result[literals::ThermalZone::SHUTDOWN_TEMP] = get_shutdown_temp();	
+    result[literals::ThermalZone::THERMAL_TYPE] = get_thermal_type();	
     return result;
 }
 
@@ -51,5 +60,13 @@ ThermalZone ThermalZone::from_json(const json::Json& json) {
     zone.set_collections(Collections::from_json(json[literals::ThermalZone::COLLECTIONS]));
     zone.set_oem(attribute::Oem::from_json(json[literals::ThermalZone::OEM]));
 
+    zone.set_chassis(json[literals::ThermalZone::CHASSIS]);   
+    zone.set_tz_id(json[literals::ThermalZone::TZ_ID]);    
+    zone.set_status_health(json[literals::ThermalZone::STATUS_HEALTH]);       
+    zone.set_status_state(json[literals::ThermalZone::STATUS_STATE]);   
+    zone.set_warning_temp(json[literals::ThermalZone::WARNING_TEMP]);       
+    zone.set_error_temp(json[literals::ThermalZone::ERROR_TEMP]);       
+    zone.set_shutdown_temp(json[literals::ThermalZone::SHUTDOWN_TEMP]); 
+    zone.set_thermal_type(json[literals::ThermalZone::THERMAL_TYPE]);          
     return zone;
 }

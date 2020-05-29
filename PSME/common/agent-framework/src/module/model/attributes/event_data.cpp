@@ -25,12 +25,15 @@
 
 using namespace agent_framework::model::attribute;
 
-json::Json EventData::to_json() const {
+json::Json EventData::to_json() const
+{
     json::Json json{};
     json[literals::ComponentNotification::COMPONENT] = get_component();
     json[literals::ComponentNotification::NOTIFICATION] = get_notification().to_string();
     json[literals::ComponentNotification::TYPE] = get_type().to_string();
     json[literals::ComponentNotification::PARENT] = get_parent();
+
+    json["event_content"] = get_event_content();
     return json;
 }
 

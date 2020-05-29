@@ -5,7 +5,7 @@
 namespace acc_onlp_helper
 {
 using namespace std;
-class Asxvolt16 : virtual public Switch
+class Asxvolt16 : virtual public Acc_Switch
 {
 public:
     Asxvolt16()

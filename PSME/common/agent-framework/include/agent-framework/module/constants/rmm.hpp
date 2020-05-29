@@ -39,6 +39,13 @@ public:
     static constexpr const char OEM[] = "oem";
     static constexpr const char PHYSICAL_CONTEXT[] = "physicalContext";
     static constexpr const char CURRENT_SPEED_UNITS[] = "currentSpeedUnits";
+
+    static constexpr const char READING[] = "reading";	
+    static constexpr const char CHASSIS[] = "chassis";	
+    static constexpr const char FAN_ID[] = "fan_id";
+    static constexpr const char FAN_TYPE[]="fan_type";
+    static constexpr const char STATUS_HEALTH[]= "status_health";
+    static constexpr const char STATUS_STATE[]= "status_state";
 };
 
 /*!
@@ -52,6 +59,16 @@ public:
     static constexpr const char DESIRED_SPEED_PWM[] = "desiredSpeedPwm";
     static constexpr const char COLLECTIONS[] = "collections";
     static constexpr const char OEM[] = "oem";
+
+    static constexpr const char READING[] = "reading";	
+    static constexpr const char CHASSIS[] = "chassis";	
+    static constexpr const char TZ_ID[] = "tz_id";
+    static constexpr const char WARNING_TEMP[]="warning_temp";
+    static constexpr const char ERROR_TEMP[]= "error_temp";
+    static constexpr const char SHUTDOWN_TEMP[]= "shutdown_temp";	
+    static constexpr const char THERMAL_TYPE[]="thermal_type";	
+    static constexpr const char STATUS_HEALTH[]= "status_health";
+    static constexpr const char STATUS_STATE[]= "status_state"; 
 };
 
 /*!
@@ -71,6 +88,19 @@ public:
     static constexpr const char FIRMWARE_VERSION[] = "firmwareVersion";
     static constexpr const char INDICATOR_LED[] = "indicatorLED";
     static constexpr const char REQUESTED_STATE[] = "requestedState";
+
+    static constexpr const char CHASSIS[] = "chassis";
+    static constexpr const char PSU_ID[] = "psu_id";
+    static constexpr const char THERMAL_ID[] = "thermal_id";
+    static constexpr const char STATUS_HEALTH[]= "status_health";
+    static constexpr const char STATUS_STATE[]= "status_state"; 	
+    static constexpr const char CURRENT_INPUT[] = "CurrentInput";
+    static constexpr const char CURRENT_OUTPUT[] = "CurrentOutput";
+    static constexpr const char VOLTAGE_INPUT[] = "LineInputVoltage";
+    static constexpr const char VOLTAGE_OUTPUT[] = "LineOutputVoltage";	
+    static constexpr const char PSU_TYPE[] = "PowerSupplyType";	
+    static constexpr const char PSU_MODULE[] = "Model";	
+    static constexpr const char PSU_SN[] = "SerialNumber";
 };
 
 /*!

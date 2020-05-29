@@ -40,7 +40,6 @@ include_directories(SYSTEM
     ${SAFESTRING_INCLUDE_DIRS}
     ${UUID_INCLUDE_DIRS}
     ${MD5_INCLUDE_DIRS}
-    ${JSONCPP_INCLUDE_DIRS}
     ${JSONRPCCPP_INCLUDE_DIRS}
     ${JSONCXX_INCLUDE_DIRS}
     ${ACC_NET_HELPER_INCLUDE_DIRS}
@@ -62,6 +61,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../common/logger/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/../../common/agent-framework/include/agent-framework/exceptions/
     ${CMAKE_CURRENT_SOURCE_DIR}/../../common/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../common/json-cxx/include/
 )
 
 add_library(acc_onlp_helper STATIC

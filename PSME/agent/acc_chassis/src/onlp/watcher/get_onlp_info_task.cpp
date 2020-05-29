@@ -26,18 +26,29 @@
  * */
 
 #include "agent-framework/module/chassis_components.hpp"
+#include "agent-framework/module/network_components.hpp"
 #include "agent-framework/module/common_components.hpp"
+#include "agent-framework/eventing/events_queue.hpp"
+#include "agent-framework/module/model/attributes/event_data.hpp"
 
 #include <onlp/watcher/get_onlp_info_task.hpp>
+//#ifdef ONLP
+#if 1 
+#include <acc_onlp_helper/acc_onlp_helper.hpp>
+using namespace acc_onlp_helper;
+#endif
 
 using namespace std;
 using namespace agent_framework::model;
 using namespace agent_framework::module;
+using namespace agent_framework::eventing;
 using namespace agent::acc_chassis::onlp;
 using namespace agent::acc_chassis::onlp::watcher;
 
+
 using agent_framework::module::ChassisComponents;
 using agent_framework::module::CommonComponents;
+using agent_framework::module::NetworkComponents;
 
 namespace {
     const unsigned SLEEP_TIME = 2;
@@ -92,10 +103,11 @@ void OnlpGetInfoTask::execute()
 void GetOnlpInfo::get_onlp_info()
 {
     log_debug(LOGUSR, "get_onlp_info");
-#ifdef ONLP
+//#ifdef ONLP
+#if 1
     try
     {
-        auto &sonlp = Switch::Switch::get_instance();
+        auto &sonlp = Acc_Switch::Acc_Switch::get_instance();
 
         /*Get/Set  FAN info.*/
         sonlp.get_fan_info();
@@ -114,10 +126,10 @@ void GetOnlpInfo::get_onlp_info()
 
                 if (fan_->get_fan_id() == fanid)
                 {
-                    int current_rpm = sonlp.get_fan_info_by_(fanid, Switch::Fan_Content::RPM);
+                    int current_rpm = sonlp.get_fan_info_by_(fanid, Acc_Switch::Fan_Content::RPM);
                     fan_->set_current_speed(current_rpm);
 
-                    int current_fan_type = sonlp.get_fan_info_by_(fanid, Switch::Fan_Content::Type);
+                    int current_fan_type = sonlp.get_fan_info_by_(fanid, Acc_Switch::Fan_Content::Type);
                     fan_->set_fan_type(current_fan_type);
 
                     std::string current_health = sonlp.get_fan_info_by_(fanid, "Status_Health");
@@ -150,10 +162,10 @@ void GetOnlpInfo::get_onlp_info()
 
                 if (psu_->get_psu_id() == psuid)
                 {
-                    int p_in = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Pin);
+                    int p_in = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Pin);
                     psu_->set_power_input(p_in);
 
-                    int p_out = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Pout);
+                    int p_out = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Pout);
                     psu_->set_power_output(p_out);
 
                     std::string current_health = sonlp.get_psu_info_by_(psuid, "Status_Health");
@@ -162,19 +174,19 @@ void GetOnlpInfo::get_onlp_info()
                     std::string current_state = sonlp.get_psu_info_by_(psuid, "Status_State");
                     psu_->set_status_state(current_state);
 
-                    int c_in = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Iin);
+                    int c_in = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Iin);
                     psu_->set_current_input(c_in);
 
-                    int c_out = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Iout);
+                    int c_out = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Iout);
                     psu_->set_current_output(c_out);
 
-                    int v_in = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Vin);
+                    int v_in = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Vin);
                     psu_->set_voltage_input(v_in);
 
-                    int v_out = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Vout);
+                    int v_out = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Vout);
                     psu_->set_voltage_output(v_out);
 
-                    int psu_type = sonlp.get_psu_info_by_(psuid, Switch::Psu_Content::Psu_type);
+                    int psu_type = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Psu_type);
                     psu_->set_psu_type(psu_type);
 
                     std::string sn = sonlp.get_psu_info_by_(psuid, "SN");
@@ -205,10 +217,10 @@ void GetOnlpInfo::get_onlp_info()
                 auto tz_ = tz_manager.get_entry_reference(tz_uuid); //Get Psu object by psu_uuid//
                 if (tz_->get_tz_id() == thermalid)
                 {
-                    int current_temp = sonlp.get_thermal_info_by_(thermalid, Switch::Thermal_Content::Current_Temperature);
+                    int current_temp = sonlp.get_thermal_info_by_(thermalid, Acc_Switch::Thermal_Content::Current_Temperature);
                     tz_->set_temperature(current_temp);
 
-                    int current_thermal_type = sonlp.get_thermal_info_by_(thermalid, Switch::Thermal_Content::Thermal_Type);
+                    int current_thermal_type = sonlp.get_thermal_info_by_(thermalid, Acc_Switch::Thermal_Content::Thermal_Type);
                     tz_->set_thermal_type(current_thermal_type);
 
                     std::string current_health = sonlp.get_thermal_info_by_(thermalid, "Status_Health");
@@ -217,13 +229,13 @@ void GetOnlpInfo::get_onlp_info()
                     std::string current_state = sonlp.get_thermal_info_by_(thermalid, "Status_State");
                     tz_->set_status_state(current_state);
 
-                    int warning_tmp = sonlp.get_thermal_info_by_(thermalid, Switch::Thermal_Content::Warning);
+                    int warning_tmp = sonlp.get_thermal_info_by_(thermalid, Acc_Switch::Thermal_Content::Warning);
                     tz_->set_warning_temp(warning_tmp);
 
-                    int error_tmp = sonlp.get_thermal_info_by_(thermalid, Switch::Thermal_Content::Error);
+                    int error_tmp = sonlp.get_thermal_info_by_(thermalid, Acc_Switch::Thermal_Content::Error);
                     tz_->set_error_temp(error_tmp);
 
-                    int shutdown_tmp = sonlp.get_thermal_info_by_(thermalid, Switch::Thermal_Content::Shutdown);
+                    int shutdown_tmp = sonlp.get_thermal_info_by_(thermalid, Acc_Switch::Thermal_Content::Shutdown);
                     tz_->set_shutdown_temp(shutdown_tmp);
                 }
             }
@@ -235,8 +247,9 @@ void GetOnlpInfo::get_onlp_info()
         for (unsigned int i = 0; i < tmp_e_a.size(); i++)
         {
             std::string t_es = tmp_e_a[i];
-            agent_framework::eventing::EventData edat;
-            edat.set_notification(::agent_framework::eventing::Notification::ResourceAdded);
+            agent_framework::model::attribute::EventData edat;
+            //edat.set_notification(::agent_framework::eventing::Notification::ResourceAdded);
+            edat.set_notification(agent_framework::model::enums::Notification::ResourceRemoved);
             edat.set_event_content(t_es);
             agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
         }
@@ -246,8 +259,8 @@ void GetOnlpInfo::get_onlp_info()
         for (unsigned int i = 0; i < tmp_e_r.size(); i++)
         {
             std::string t_er = tmp_e_r[i];
-            agent_framework::eventing::EventData edat;
-            edat.set_notification(::agent_framework::eventing::Notification::ResourceRemoved);
+            agent_framework::model::attribute::EventData edat;
+            edat.set_notification(agent_framework::model::enums::Notification::ResourceRemoved);
             edat.set_event_content(t_er);
             agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
         }
@@ -257,12 +270,11 @@ void GetOnlpInfo::get_onlp_info()
         for (unsigned int i = 0; i < tmp_e_al.size(); i++)
         {
             std::string t_ea = tmp_e_al[i];
-            agent_framework::eventing::EventData edat;
-            edat.set_notification(::agent_framework::eventing::Notification::Alert);
+            agent_framework::model::attribute::EventData edat;
+            edat.set_notification(agent_framework::model::enums::Notification::Alert);
             edat.set_event_content(t_ea);
             agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
         }
-        sonlp.clean_Event_Rresouce_Event(); //Reset event //
     }
     catch (const std::exception &e)
     {
@@ -275,9 +287,10 @@ void GetOnlpInfo::get_onlp_info()
 [[noreturn]] void GetOnlpInfo::get_onlp_port_info() 
 {
     log_debug(LOGUSR, "get_onlp_port_info");
-#ifdef ONLP
+//#ifdef ONLP
+#if 1
 
-    auto &sonlp = Switch::Switch::get_instance();
+    auto &sonlp = Acc_Switch::Acc_Switch::get_instance();
 
     while (true)
     {
@@ -292,8 +305,8 @@ void GetOnlpInfo::get_onlp_info()
             for (unsigned int i = 0; i < tmp_e_a.size(); i++)
             {
                 std::string t_es = tmp_e_a[i];
-                agent_framework::eventing::EventData edat;
-                edat.set_notification(::agent_framework::eventing::Notification::ResourceAdded);
+                agent_framework::model::attribute::EventData edat;
+                edat.set_notification(agent_framework::model::enums::Notification::ResourceAdded);
                 edat.set_event_content(t_es);
                 agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
             }
@@ -303,8 +316,8 @@ void GetOnlpInfo::get_onlp_info()
             for (unsigned int i = 0; i < tmp_e_r.size(); i++)
             {
                 std::string t_er = tmp_e_r[i];
-                agent_framework::eventing::EventData edat;
-                edat.set_notification(::agent_framework::eventing::Notification::ResourceRemoved);
+                agent_framework::model::attribute::EventData edat;
+                edat.set_notification(agent_framework::model::enums::Notification::ResourceRemoved);
                 edat.set_event_content(t_er);
                 agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
             }
@@ -314,12 +327,11 @@ void GetOnlpInfo::get_onlp_info()
             for (unsigned int i = 0; i < tmp_e_al.size(); i++)
             {
                 std::string t_ea = tmp_e_al[i];
-                agent_framework::eventing::EventData edat;
-                edat.set_notification(::agent_framework::eventing::Notification::Alert);
+                agent_framework::model::attribute::EventData edat;
+                edat.set_notification(agent_framework::model::enums::Notification::Alert);
                 edat.set_event_content(t_ea);
                 agent_framework::eventing::EventsQueue::get_instance()->push_back(edat);
             }
-            sonlp.clean_Event_Port_Rresouce_Event(); //Reset event //
         }
         catch (const std::exception &e)
         {
@@ -340,8 +352,9 @@ void GetOnlpInfo::get_onlp_info()
 [[noreturn]] void GetOnlpInfo::get_onlp_port_oom_info()
 {
     log_debug(LOGUSR, "get_onlp_port_oom_info");
-#ifdef ONLP
-    auto &sonlp = Switch::Switch::get_instance();
+//#ifdef ONLP
+#if 1
+    auto &sonlp = Acc_Switch::Acc_Switch::get_instance();
 
     while (true)
     {
@@ -365,7 +378,7 @@ void GetOnlpInfo::get_onlp_info()
 
                     if (port_->get_port_id() == portid)
                     {
-                        int current_present = sonlp.get_port_info_by_(portid, Switch::Port_Content::Port_Present);
+                        int current_present = sonlp.get_port_info_by_(portid, Acc_Switch::Port_Content::Port_Present);
 
                         if (current_present)
                         {

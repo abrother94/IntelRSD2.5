@@ -36,12 +36,27 @@ constexpr const char Fan::FAN[];
 constexpr const char Fan::PHYSICAL_CONTEXT[];
 constexpr const char Fan::CURRENT_SPEED_UNITS[];
 
+constexpr const char Fan::CHASSIS[]; 
+constexpr const char Fan::FAN_ID[];   
+constexpr const char Fan::STATUS_HEALTH[];
+constexpr const char Fan::STATUS_STATE[];
+constexpr const char Fan::FAN_TYPE[];
+
 constexpr const char ThermalZone::ZONE[];
 constexpr const char ThermalZone::STATUS[];
 constexpr const char ThermalZone::VOLUMETRIC_AIRFLOW_CFM[];
 constexpr const char ThermalZone::DESIRED_SPEED_PWM[];
 constexpr const char ThermalZone::COLLECTIONS[];
 constexpr const char ThermalZone::OEM[];
+
+constexpr const char ThermalZone::CHASSIS[];	
+constexpr const char ThermalZone::TZ_ID[];
+constexpr const char ThermalZone::SHUTDOWN_TEMP[];
+constexpr const char ThermalZone::WARNING_TEMP[];
+constexpr const char ThermalZone::ERROR_TEMP[];
+constexpr const char ThermalZone::STATUS_HEALTH[];
+constexpr const char ThermalZone::STATUS_STATE[];
+constexpr const char ThermalZone::THERMAL_TYPE[];
 
 constexpr const char Psu::PSU[];
 constexpr const char Psu::STATUS[];
@@ -55,6 +70,19 @@ constexpr const char Psu::LAST_POWER_OUTPUT_WATTS[];
 constexpr const char Psu::POWER_CAPACITY_WATTS[];
 constexpr const char Psu::INDICATOR_LED[];
 constexpr const char Psu::REQUESTED_STATE[];
+
+constexpr const char Psu::CHASSIS[]; 
+constexpr const char Psu::PSU_ID[];
+constexpr const char Psu::THERMAL_ID[];
+constexpr const char Psu::STATUS_HEALTH[];
+constexpr const char Psu::STATUS_STATE[];
+constexpr const char Psu::CURRENT_INPUT[];
+constexpr const char Psu::CURRENT_OUTPUT[];
+constexpr const char Psu::VOLTAGE_INPUT[];
+constexpr const char Psu::VOLTAGE_OUTPUT[];
+constexpr const char Psu::PSU_TYPE[];
+constexpr const char Psu::PSU_MODULE[];
+constexpr const char Psu::PSU_SN[];
 
 constexpr const char PowerZone::ZONE[];
 constexpr const char PowerZone::STATUS[];

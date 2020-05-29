@@ -29,6 +29,18 @@
 namespace agent_framework {
 namespace eventing {
 
+ENUM(Notification, std::uint32_t,
+    Add,
+    Remove,
+    Update,
+    ResourceAdded,
+    ResourceRemoved,
+    Alert,
+    ResourceUpdated,
+    StatusChange
+);
+
+
 class EventsQueue
     : public ::generic::ThreadSafeQueue<agent_framework::model::requests::ComponentNotification>,
         public agent_framework::generic::Singleton<EventsQueue> {

@@ -7,7 +7,7 @@ namespace acc_onlp_helper
 using namespace std;
 // Take ASGVOLT64 as parent class
 // XSFP light on/off by using module_tx_disable_X  sys node
-class Switch_sys_module : virtual public Switch
+class Switch_sys_module : virtual public Acc_Switch
 {
 public:
     Switch_sys_module()

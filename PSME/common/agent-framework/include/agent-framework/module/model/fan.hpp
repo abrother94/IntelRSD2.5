@@ -108,6 +108,106 @@ public:
     }
 
     /*!
+     * @brief return fan_type of type std::uint32_t
+     *
+     * @return the fan_type value
+     */
+    OptionalField<std::int32_t> get_fan_type() const
+    {
+        return m_fan_type;
+    }
+
+    /*!
+     * @brief setter for fan_id attribute
+     *
+     * @param fan_id of type uint32_t
+     */
+    void set_fan_id(const OptionalField<uint32_t> fan_id)
+    {
+        m_fan_id = fan_id;
+    }
+
+    /*!
+     * @brief return fan_id of type std::uint32_t
+     *
+     * @return the fan_id value
+     */
+    OptionalField<std::uint32_t> get_fan_id() const
+    {
+        return m_fan_id;
+    }
+
+    /*!
+     * @brief setter for fan_type attribute
+     *
+     * @param fan_type of type uint32_t
+     */
+    void set_fan_type(const OptionalField<int32_t> thermal_type)
+    {
+        m_fan_type = thermal_type;
+    }
+
+    /*!
+     * @brief setter for status_health attribute
+     *
+     * @param status_health of type std::string
+     */
+    void set_status_health(const OptionalField<std::string> &status_health)
+    {
+        m_status_health = status_health;
+    }
+
+    /*!
+     * @brief return an object status_health of class std::string
+     *
+     * @return the status_health value
+     */
+    const OptionalField<std::string> &get_status_health() const
+    {
+        return m_status_health;
+    }
+
+    /*!
+     * @brief setter for status_state attribute
+     *
+     * @param status_state of type std::string
+     */
+    void set_status_state(const OptionalField<std::string> &status_state)
+    {
+        m_status_state = status_state;
+    }
+
+    /*!
+     * @brief return an object status_state of class std::string
+     *
+     * @return the status_state value
+     */
+    const OptionalField<std::string> &get_status_state() const
+    {
+        return m_status_state;
+    }
+
+    /*!
+     * @brief setter for chassis attribute
+     *
+     * @param chassis of type std::string
+     */
+    void set_chassis(const OptionalField<std::string> &chassis)
+    {
+        m_chassis = chassis;
+    }
+
+    /*!
+     * @brief return an object chassis of class std::string
+     *
+     * @return the chassis value
+     */
+    const OptionalField<std::string> &get_chassis() const
+    {
+        return m_chassis;
+    }
+
+    /*!
      * @brief Returns current_speed_units
      * @return Current value
      */
@@ -168,6 +268,13 @@ private:
 
     // agent only data
     uint8_t m_slot_id{};    // physical slot id
+
+    OptionalField<std::uint32_t> m_fan_id{0u};
+    OptionalField<std::int32_t> m_fan_type{0};  
+    OptionalField<std::string> m_status_health{};
+    OptionalField<std::string> m_status_state{};
+    OptionalField<std::uint32_t> m_desired_speed{0u};
+    OptionalField<std::string> m_chassis{};
 
     static const enums::CollectionName collection_name;
     static const enums::Component component;

@@ -82,6 +82,8 @@ set(SOURCES
     model/attributes/power_management_policy.cpp
     model/attributes/performance_configuration.cpp
 
+    model/attributes/trans_info.cpp
+
     model/acl.cpp
     model/acl_rule.cpp
     model/authorization_certificate.cpp

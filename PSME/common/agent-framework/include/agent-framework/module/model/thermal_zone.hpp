@@ -126,6 +126,180 @@ public:
         m_desired_speed_pwm = desired_speed_pwm;
     }
 
+    /*!
+     * @brief setter for chassis attribute
+     *
+     * @param chassis of type std::string
+     */
+    void set_chassis(const OptionalField<std::string> &chassis)
+    {
+        m_chassis = chassis;
+    }
+
+    /*!
+     * @brief return an object chassis of class std::string
+     *
+     * @return the chassis value
+     */
+    const OptionalField<std::string> &get_chassis() const
+    {
+        return m_chassis;
+    }
+
+    /*!
+     * @brief setter for fan_id attribute
+     *
+     * @param fan_id of type uint32_t
+     */
+    void set_tz_id(const OptionalField<uint32_t> fan_id)
+    {
+        m_tz_id = fan_id;
+    }
+
+    /*!
+     * @brief return fan_id of type std::uint32_t
+     *
+     * @return the fan_id value
+     */
+    OptionalField<std::uint32_t> get_tz_id() const
+    {
+        return m_tz_id;
+    }
+
+    /*!
+     * @brief return warning_temp of type std::uint32_t
+     *
+     * @return the warning_temp value
+     */
+    OptionalField<std::int32_t> get_warning_temp() const
+    {
+        return m_warning_temp;
+    }
+
+    /*!
+     * @brief setter for warning_temp attribute
+     *
+     * @param warning_temp of type uint32_t
+     */
+    void set_warning_temp(const OptionalField<int32_t> warning_temp)
+    {
+        m_warning_temp = warning_temp;
+    }
+
+    /*!
+     * @brief return error_temp of type std::uint32_t
+     *
+     * @return the error_temp value
+     */
+    OptionalField<std::int32_t> get_error_temp() const
+    {
+        return m_error_temp;
+    }
+
+    /*!
+     * @brief setter for error_temp attribute
+     *
+     * @param error_temp of type uint32_t
+     */
+    void set_error_temp(const OptionalField<int32_t> error_temp)
+    {
+        m_error_temp = error_temp;
+    }
+
+    /*!
+     * @brief return shutdown_tempof type std::uint32_t
+     *
+     * @return the shutdown_temp value
+     */
+    OptionalField<std::int32_t> get_shutdown_temp() const
+    {
+        return m_shutdown_temp;
+    }
+
+    /*!
+     * @brief setter for shutdown_temp attribute
+     *
+     * @param shutdown_temp of type uint32_t
+     */
+    void set_shutdown_temp(const OptionalField<int32_t> shutdown_temp)
+    {
+        m_shutdown_temp = shutdown_temp;
+    }
+
+    /*!
+     * @brief return thermal_type of type std::uint32_t
+     *
+     * @return the thermal_type value
+     */
+    OptionalField<std::int32_t> get_thermal_type() const
+    {
+        return m_thermal_type;
+    }
+
+    /*!
+     * @brief setter for thermal_type attribute
+     *
+     * @param thermal_type of type uint32_t
+     */
+    void set_thermal_type(const OptionalField<int32_t> thermal_type)
+    {
+        m_thermal_type = thermal_type;
+    }
+
+    /*!
+     * @brief setter for status_health attribute
+     *
+     * @param status_health of type std::string
+     */
+    void set_status_health(const OptionalField<std::string> &status_health)
+    {
+        m_status_health = status_health;
+    }
+
+    /*!
+     * @brief return an object status_health of class std::string
+     *
+     * @return the status_health value
+     */
+    const OptionalField<std::string> &get_status_health() const
+    {
+        return m_status_health;
+    }
+
+    /*!
+     * @brief setter for status_state attribute
+     *
+     * @param status_state of type std::string
+     */
+    void set_status_state(const OptionalField<std::string> &status_state)
+    {
+        m_status_state = status_state;
+    }
+
+    /*!
+     * @brief return an object status_state of class std::string
+     *
+     * @return the status_state value
+     */
+    const OptionalField<std::string> &get_status_state() const
+    {
+        return m_status_state;
+    }
+
+    OptionalField<double> get_temperature() const
+    {
+        return m_temperature;
+    }
+
+    /*!
+     * @brief setter for temperature attribute
+     *
+     * @param temperature of type double
+     */
+    void set_temperature(const OptionalField<double> temperature)
+    {
+        m_temperature = temperature;
+    }
 
 private:
 
@@ -137,7 +311,15 @@ private:
     static const enums::CollectionName collection_name;
     static const enums::Component component;
 
+    OptionalField<double> m_temperature{0.0};
+    OptionalField<std::uint32_t> m_tz_id{0u}; 
+    OptionalField<std::string> m_chassis{}; 
+    OptionalField<std::int32_t> m_thermal_type{0};	
+    OptionalField<std::int32_t> m_warning_temp{0};	
+    OptionalField<std::int32_t> m_error_temp{0};	
+    OptionalField<std::int32_t> m_shutdown_temp{0};
+    OptionalField<std::string> m_status_health{};
+    OptionalField<std::string> m_status_state{};
 };
-
 }
 }

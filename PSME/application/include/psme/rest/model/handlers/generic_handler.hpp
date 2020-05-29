@@ -292,10 +292,10 @@ private:
     UpdateStatus add_to_model(Context& ctx, Model& entry);
 };
 
-
-template<typename Request, typename Model, typename IdPolicy>
-bool GenericHandler<Request, Model, IdPolicy>::handle(JsonAgentSPtr agent, const EventData& event,
-    EventVec& northbound_events) {
+template <typename Request, typename Model, typename IdPolicy>
+bool GenericHandler<Request, Model, IdPolicy>::handle(JsonAgentSPtr agent, const EventData &event,
+                                                      EventVec &northbound_events)
+{
 
     assert(is_event_for_me(event));
 
@@ -306,84 +306,166 @@ bool GenericHandler<Request, Model, IdPolicy>::handle(JsonAgentSPtr agent, const
     ctx.stack.emplace(parent_component);
 
     log_info("rest", ctx.indent << ctx.indent << "[" << char(ctx.mode) << "] "
-                                            << "Agent event received: " << event.get_notification().to_string()
-                                            << " " << component_s() << " uuid=" << event.get_component() << ", "
-                                            << "parent uuid=" << event.get_parent() << ", agent_id="
-                                            << agent->get_gami_id());
-    try {
-        switch (event.get_notification()) {
-            case Notification::Add: {
-                try {
-                    if (agent_framework::module::get_manager<Model>().entry_exists(event.get_component())) {
-                        log_info("rest", ctx.indent << ctx.indent << "[" << char(ctx.mode) << "] "
-                                                                << "Duplicated or late event. Ignoring.");
-                        return true;
-                    }
-                    // add may throw
-                    add(ctx, event.get_parent(), event.get_component(), true);
-                    northbound_events = ctx.events;
+                                << "Agent event received: " << event.get_notification().to_string()
+                                << " " << component_s() << " uuid=" << event.get_component() << ", "
+                                << "parent uuid=" << event.get_parent() << ", agent_id="
+                                << agent->get_gami_id());
+    try
+    {
+        switch (event.get_notification())
+        {
+        case Notification::Add:
+        {
+            try
+            {
+                if (agent_framework::module::get_manager<Model>().entry_exists(event.get_component()))
+                {
+                    log_info("rest", ctx.indent << ctx.indent << "[" << char(ctx.mode) << "] "
+                                                << "Duplicated or late event. Ignoring.");
                     return true;
                 }
-                catch (const psme::core::agent::AgentUnreachable&) {
-                    // in case of connection error, added element plus all his descendants will be removed from
-                    // local "database". Events collected in Context will not be returned in northbound_events
-                    log_error("rest",
-                              ctx.indent << "Exception while handling Agent Event. Removing non-complete data.");
-                    do_remove(ctx, event.get_component());
-                    return false;
-                }
-            }
-            case Notification::Remove: {
-                try {
-                    auto uuid_to_remove = event.get_component();
-                    do_remove(ctx, uuid_to_remove);
-                    northbound_events = ctx.events;
-                }
-                catch (const agent_framework::exceptions::InvalidValue&) {
-                    log_info("rest", "Got notification about removal"
-                        << "of a component, but component is not present in the model.");
-                }
-                catch (const agent_framework::exceptions::NotFound&) {
-                    log_info("rest", "Got notification about removal"
-                        << "of a component, but component is not present in the model.");
-                }
-                return true;
-            }
-            case Notification::Update: {
-                // update may throw
-                if (!agent_framework::module::get_manager<Model>().entry_exists(event.get_component())) {
-                    log_error("rest", "Update event for unknown entry "
-                        << event.get_component() << " of type "
-                        << event.get_type().to_string() << ". Ignoring.");
-                    return true;
-                }
-                update(ctx, event.get_parent(), event.get_component());
+                // add may throw
+                add(ctx, event.get_parent(), event.get_component(), true);
                 northbound_events = ctx.events;
                 return true;
             }
-            default:
-                log_error("rest", "Unknown agent event received: " << event.get_notification().to_string());
-                break;
+            catch (const psme::core::agent::AgentUnreachable &)
+            {
+                // in case of connection error, added element plus all his descendants will be removed from
+                // local "database". Events collected in Context will not be returned in northbound_events
+                log_error("rest",
+                          ctx.indent << "Exception while handling Agent Event. Removing non-complete data.");
+                do_remove(ctx, event.get_component());
+                return false;
+            }
+        }
+        case Notification::Remove:
+        {
+            try
+            {
+                auto uuid_to_remove = event.get_component();
+                do_remove(ctx, uuid_to_remove);
+                northbound_events = ctx.events;
+            }
+            catch (const agent_framework::exceptions::InvalidValue &)
+            {
+                log_info("rest", "Got notification about removal"
+                                     << "of a component, but component is not present in the model.");
+            }
+            catch (const agent_framework::exceptions::NotFound &)
+            {
+                log_info("rest", "Got notification about removal"
+                                     << "of a component, but component is not present in the model.");
+            }
+            return true;
+        }
+        case Notification::Update:
+        {
+            // update may throw
+            if (!agent_framework::module::get_manager<Model>().entry_exists(event.get_component()))
+            {
+                log_error("rest", "Update event for unknown entry "
+                                      << event.get_component() << " of type "
+                                      << event.get_type().to_string() << ". Ignoring.");
+                return true;
+            }
+            update(ctx, event.get_parent(), event.get_component());
+            northbound_events = ctx.events;
+            return true;
+        }
+#if 1
+            /*Nick added for ResourceAdded/ResourceRemoved/Alert/ResourceUpdated/StatusChange/ subscription Begin:*/
+        case Notification::ResourceAdded:
+        {
+            log_info("rest", "Got notification about ResourceAdded");
+
+            EventVec events{};
+            Event A(EventType::ResourceAdded, event.get_event_old_state());
+            A.set_message(event.get_event_content());
+            events.emplace_back(A);
+
+            SubscriptionManager::get_instance()->notify(events);
+            return true;
+        }
+
+        case Notification::ResourceRemoved:
+        {
+            log_info("rest", "Got notification about ResourceRemoved");
+
+            EventVec events{};
+            Event A(EventType::ResourceRemoved, event.get_event_old_state());
+            A.set_message(event.get_event_content());
+            events.emplace_back(A);
+
+            SubscriptionManager::get_instance()->notify(events);
+            return true;
+        }
+
+        case Notification::Alert:
+        {
+            log_info("rest", "Got notification about Alert");
+
+            EventVec events{};
+            Event A(EventType::Alert, event.get_event_old_state());
+            A.set_message(event.get_event_content());
+            A.set_severity("Warning");
+            events.emplace_back(A);
+            SubscriptionManager::get_instance()->notify(events);
+            return true;
+        }
+
+        case Notification::ResourceUpdated:
+        {
+            log_info("rest", "Got notification about ResourceUpdated.");
+
+            EventVec events{};
+            Event A(EventType::Alert, event.get_event_old_state());
+            A.set_message(event.get_event_content());
+            events.emplace_back(A);
+
+            SubscriptionManager::get_instance()->notify(events);
+            return true;
+        }
+
+        case Notification::StatusChange:
+        {
+            log_info("rest", "Got notification about StatusChange.");
+
+            EventVec events{};
+            Event A(EventType::StatusChange, event.get_event_content());
+            A.set_message(event.get_event_content());
+            events.emplace_back(A);
+
+            SubscriptionManager::get_instance()->notify(events);
+            return true;
+        }
+        /*Nick added for ResourceAdded/ResourceRemoved/Alert/ResourceUpdated/StatusChange/ subscription End  :*/
+#endif
+        default:
+            log_error("rest", "Unknown agent event received: " << event.get_notification().to_string());
+            break;
         }
     }
-    catch (const core::agent::AgentUnreachable& e) {
+    catch (const core::agent::AgentUnreachable &e)
+    {
         log_error("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                 << "AgentEvent Handling failed due to agent connection error: "
-                                                 << e.what());
+                                     << "AgentEvent Handling failed due to agent connection error: "
+                                     << e.what());
     }
-    catch (const json_rpc::JsonRpcException& e) {
+    catch (const json_rpc::JsonRpcException &e)
+    {
         log_error("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                 << "AgentEvent Handling failed due to JsonRpcException: "
-                                                 << e.what());
+                                     << "AgentEvent Handling failed due to JsonRpcException: "
+                                     << e.what());
     }
-    catch (...) {
+    catch (...)
+    {
         log_error("rest", ctx.indent << "Exception while handling Agent Event. State may be incomplete.");
         return false;
     }
 
     return false;
 }
-
 
 template<typename Request, typename Model, typename IdPolicy>
 std::uint64_t GenericHandler<Request, Model, IdPolicy>::get_manager_epoch() {

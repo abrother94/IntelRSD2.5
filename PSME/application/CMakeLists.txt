@@ -38,7 +38,6 @@ include_directories(
     ${NET_INCLUDE_DIRS}
     ${SSDP_INCLUDE_DIRS}
     ${UTILS_INCLUDE_DIRS}
-
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
