@@ -44,6 +44,7 @@ JsonAgentSPtr AgentManager::get_agent(const std::string& gami_id) const {
 
 void AgentManager::add_agent(JsonAgentSPtr agent) {
     std::lock_guard<std::mutex> lock{m_mutex};
+    log_info("AgentManager", "add_agent"); 
     m_agents.push_back(agent);
 }
 

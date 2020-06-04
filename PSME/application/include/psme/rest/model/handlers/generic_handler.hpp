@@ -473,10 +473,10 @@ std::uint64_t GenericHandler<Request, Model, IdPolicy>::get_manager_epoch() {
 }
 
 
-template<typename Request, typename Model, typename IdPolicy>
+template <typename Request, typename Model, typename IdPolicy>
 void GenericHandler<Request, Model, IdPolicy>
 ::poll(JsonAgentSPtr agent,
-       const std::string& parent_uuid, const Component parent_component,
+                                                    const std::string &parent_uuid, const Component parent_component,
        const std::string& uuid) {
 
     Context ctx;
@@ -486,38 +486,39 @@ void GenericHandler<Request, Model, IdPolicy>
 
     try {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] " << "Polling started on "
-                                                << component_s() << " uuid=" << uuid);
+                                    << component_s() << " uuid=" << uuid);
         try {
             add(ctx, parent_uuid, uuid, true /*recursively*/); // add may throw
         }
         catch (const json_rpc::JsonRpcException&) {}
 
+        log_info("rest", "After Polling and send notify!");
         SubscriptionManager::get_instance()->notify(ctx.events);
     }
     catch (const core::agent::AgentUnreachable&) {
         log_error("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                 << "Polling failed due to agent error (unreachable).");
+                                     << "Polling failed due to agent error (unreachable).");
     }
 
     if (ctx.num_removed > 0) {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                << "#removed : " << ctx.num_removed);
+                                    << "#removed : " << ctx.num_removed);
     }
     if (ctx.num_added > 0) {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                << "#added : " << ctx.num_added);
+                                    << "#added : " << ctx.num_added);
     }
     if (ctx.num_updated > 0) {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                << "#updated: " << ctx.num_updated);
+                                    << "#updated: " << ctx.num_updated);
     }
     if (ctx.num_status_changed > 0) {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                << "#status changed: " << ctx.num_status_changed);
+                                    << "#status changed: " << ctx.num_status_changed);
     }
     if (ctx.num_alerts > 0) {
         log_info("rest", ctx.indent << "[" << char(ctx.mode) << "] "
-                                                << "#alerts: " << ctx.num_alerts);
+                                    << "#alerts: " << ctx.num_alerts);
     }
 }
 
@@ -536,12 +537,13 @@ std::uint64_t GenericHandler<Request, Model, IdPolicy>
 }
 
 
-template<typename Request, typename Model, typename IdPolicy>
+template <typename Request, typename Model, typename IdPolicy>
 std::uint64_t GenericHandler<Request, Model, IdPolicy>
 ::load(JsonAgentSPtr agent, const std::string& parent, const Component parent_component,
        const std::string& uuid, bool recursively) {
 
     assert(parent != uuid);
+    log_info("rest", "Loading and send notify ");
 
     Context ctx;
     ctx.agent = agent.get();
@@ -614,6 +616,7 @@ void GenericHandler<Request, Model, IdPolicy>
         }
     }
     ctx.indent = indent;
+    log_info("rest", "Loading collection and send notify ");
     SubscriptionManager::get_instance()->notify(ctx.events);
 }
 

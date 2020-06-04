@@ -34,7 +34,7 @@ using namespace agent_framework::module;
 
 REGISTER_COMMAND(GetTasksCollection,
     [] (const GetTasksCollection::Request&, GetTasksCollection::Response& rsp) {
-        log_debug("chassis-agent", "Getting collection of tasks");
+        log_debug("acc-chassis-agent", "Acc Getting collection of tasks");
         auto keys = CommonComponents::get_instance()->get_task_manager().get_keys();
         for (const auto& key : keys) {
             rsp.add_entry(agent_framework::model::attribute::TaskEntry{key});

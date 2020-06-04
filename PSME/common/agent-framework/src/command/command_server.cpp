@@ -58,6 +58,7 @@ void CommandServer::add(const command::Registry::Commands& commands) {
                 << " while this command was already registered! Ignoring it...");
             continue;
         }
+        log_debug("command-server add command", command_name);
         registered_commands.push_back(command_name);
 
         m_handler->set_method_handler(command_name,

@@ -60,6 +60,7 @@ public:
     Response execute(const Request& req) {
         std::lock_guard<std::mutex> lock(m_single_request_mutex);
         try {
+            log_info("rest", "JsonAgent call client method...."); 
             auto res = m_client.CallMethod(Request::get_command(), req.to_json());
             m_connection_error_observed_at = std::experimental::nullopt;
 

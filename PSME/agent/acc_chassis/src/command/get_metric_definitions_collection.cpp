@@ -25,7 +25,7 @@ using namespace agent_framework::module;
 
 REGISTER_COMMAND(GetMetricDefinitionsCollection,
     [] (const GetMetricDefinitionsCollection::Request&, GetMetricDefinitionsCollection::Response& rsp) {
-        log_debug("chassis-agent", "Getting collection of metric definitions");
+        log_debug("acc-chassis-agent", "Acc Getting collection of metric definitions");
         auto keys = get_manager<agent_framework::model::MetricDefinition>().get_keys();
         for (const auto& key : keys) {
             rsp.add_entry(agent_framework::model::attribute::MetricDefinitionEntry{key});

@@ -34,9 +34,9 @@ namespace agent {
 namespace chassis {
 namespace loader {
 
-class ChassisLoader : public agent_framework::module::loader::Loader {
+class Acc_ChassisLoader : public agent_framework::module::loader::Loader {
 public:
-    ~ChassisLoader();
+    ~Acc_ChassisLoader();
 
     bool load(const json::Json&) override;
 };

@@ -22,16 +22,25 @@
  * */
 
 #include "agent-framework/module/common_components.hpp"
+#include "agent-framework/module/compute_components.hpp"
+#include "agent-framework/module/chassis_components.hpp"
 #include "agent-framework/command/registry.hpp"
 #include "agent-framework/command/chassis_commands.hpp"
+#include "agent-framework/command/compute_commands.hpp"
 
 using namespace agent_framework::command;
 using namespace agent_framework::module;
 
 REGISTER_COMMAND(GetChassisInfo,
     [] (const GetChassisInfo::Request& req, GetChassisInfo::Response& rsp) {
-        log_debug("rpc", "GetChassisInfo with parameters: chassis "
-            << req.get_uuid());
+        log_debug("acc rpc ", "Acc GetChassisInfo with parameters: chassis " << req.get_uuid());
         rsp = CommonComponents::get_instance()->get_chassis_manager().get_entry(req.get_uuid());
+    }
+);
+
+REGISTER_COMMAND(GetFanInfo,
+    [] (const GetFanInfo::Request& req, GetFanInfo::Response& rsp) {
+         log_debug("acc rpc", "GetFanInfo with parameters: Fan " << req.get_uuid());   
+        rsp = ChassisComponents::get_instance()->get_fan_manager().get_entry(req.get_uuid());
     }
 );

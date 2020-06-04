@@ -88,8 +88,8 @@ int main(int argc, const char* argv[]) {
         log_error("chassis-agent", "Cannot read server port " << e.what());
     }
 
-    agent::chassis::loader::ChassisLoader module_loader{};
-    if (!module_loader.load(configuration))
+    agent::chassis::loader::Acc_ChassisLoader acc_module_loader{};
+    if (!acc_module_loader.load(configuration))
     {
         log_error("chassis-agent", "Invalid modules configuration");
         return -2;
@@ -126,7 +126,7 @@ int main(int argc, const char* argv[]) {
     wait_for_interrupt();
     log_info("chassis-agent", "Stopping Accton PSME Chassis Agent.");
 
-    //server.stop();
+    server.stop();
     amc_connection.stop();
     event_dispatcher.stop();
     Configuration::cleanup();

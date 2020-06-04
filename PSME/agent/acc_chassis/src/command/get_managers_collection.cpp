@@ -31,17 +31,20 @@ using namespace agent_framework::command;
 using namespace agent_framework::module;
 using namespace agent_framework::model;
 
-namespace {
+namespace
+{
 
-void get_manager_collection(const GetManagersCollection::Request&, GetManagersCollection::Response& response) {
-    log_debug("chassis-agent", "GetManagersCollection");
+void get_manager_collection(const GetManagersCollection::Request &, GetManagersCollection::Response &response)
+{
+    log_debug("acc-chassis-agent", "Acc GetManagersCollection");
     // Return only top level manager
     auto keys = CommonComponents::get_instance()->get_module_manager().get_keys("");
 
-    for (const auto& key : keys) {
-        const auto& manager = CommonComponents::get_instance()->get_module_manager().get_entry(key);
-        // Chassis agent should only expose drawer manager.
-        if (manager.has_persistent_uuid() && manager.get_manager_type() == enums::ManagerInfoType::EnclosureManager) {
+    for (const auto &key : keys)
+    {
+        const auto &manager = CommonComponents::get_instance()->get_module_manager().get_entry(key);
+        if (manager.get_manager_type() == enums::ManagerInfoType::RackManager)
+        {
             response.add_entry(agent_framework::model::attribute::ManagerEntry(key));
         }
     }

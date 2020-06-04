@@ -102,7 +102,7 @@ void OnlpGetInfoTask::execute()
 
 void GetOnlpInfo::get_onlp_info()
 {
-    log_debug(LOGUSR, "get_onlp_info");
+//    log_debug(LOGUSR, "get_onlp_info");
 //#ifdef ONLP
 #if 1
     try
