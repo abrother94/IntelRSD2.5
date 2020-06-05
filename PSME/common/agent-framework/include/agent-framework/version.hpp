@@ -41,7 +41,7 @@ public:
     static constexpr int MAJOR_INDEX = 0;
     static constexpr int BUILD_INDEX = 1;
     static constexpr int MINOR_INDEX = 2;
-    static constexpr const char* BUILD_TIME = "10:56:33, 01-06-2020";
+    static constexpr const char* BUILD_TIME = "15:27:45, 04-06-2020";
     static constexpr const build_type BUILD_TYPE = build_type::MAN;
     static constexpr const char* VERSION_STRING = "2.5.0.6.0";
 

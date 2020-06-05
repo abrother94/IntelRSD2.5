@@ -27,6 +27,7 @@
 #include "agent-framework/command/registry.hpp"
 #include "agent-framework/command/chassis_commands.hpp"
 #include "agent-framework/command/compute_commands.hpp"
+#include "agent-framework/command/rmm_commands.hpp"
 
 using namespace agent_framework::command;
 using namespace agent_framework::module;
@@ -42,5 +43,19 @@ REGISTER_COMMAND(GetFanInfo,
     [] (const GetFanInfo::Request& req, GetFanInfo::Response& rsp) {
          log_debug("acc rpc", "GetFanInfo with parameters: Fan " << req.get_uuid());   
         rsp = ChassisComponents::get_instance()->get_fan_manager().get_entry(req.get_uuid());
+    }
+);
+
+REGISTER_COMMAND(GetThermalZoneInfo,
+    [] (const GetThermalZoneInfo::Request& req, GetThermalZoneInfo::Response& rsp) {
+         log_debug("acc rpc", "GetThermalZoneInfo with parameters: ThermalZone " << req.get_uuid());   
+        rsp = ChassisComponents::get_instance()->get_thermal_zone_manager().get_entry(req.get_uuid());
+    }
+);
+
+REGISTER_COMMAND(GetPsuInfo,
+    [] (const GetPsuInfo::Request& req, GetPsuInfo::Response& rsp) {
+         log_debug("acc rpc", "GetPsuInfo with parameters: PSU " << req.get_uuid());   
+        rsp = ChassisComponents::get_instance()->get_psu_manager().get_entry(req.get_uuid());
     }
 );

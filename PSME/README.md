@@ -47,3 +47,5 @@ The PSME Network agent works on Arista* EOS.
 
 Refer to the **PSME User Guide** available at [intel.com page](https://www.intel.com/content/www/us/en/architecture-and-technology/rack-scale-design/rack-scale-design-resources.html)
 for detailed list of dependencies and compilation instructions.
+
+   ![Screenshot](PSME_arch.png) 

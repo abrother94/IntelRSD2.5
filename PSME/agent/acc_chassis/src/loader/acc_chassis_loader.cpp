@@ -96,8 +96,20 @@ private:
             get_manager<ThermalZone>().add_entry(thermal_zone);
 
             Fan fan{chassis.get_uuid()};
-            log_debug("discovery", "Adding fan zone:" << fan.get_uuid() << " to chassis " << chassis.get_uuid());
+            log_debug("discovery", "Adding fan :" << fan.get_uuid() << " to chassis " << chassis.get_uuid());
             get_manager<Fan>().add_entry(fan);
+
+            chassis.add_collection(attribute::Collection(
+                enums::CollectionName::Fans,
+                enums::CollectionType::Fans));
+
+            chassis.add_collection(attribute::Collection(
+                enums::CollectionName::ThermalZones,
+                enums::CollectionType::ThermalZones));
+
+            chassis.add_collection(attribute::Collection(
+                enums::CollectionName::Psus,
+                enums::CollectionType::PSUs));
 
             get_manager<Chassis>().add_entry(chassis);
         }
@@ -109,23 +121,10 @@ private:
     Manager make_manager(const json::Json &json)
     {
         Manager manager{};
-
         //Chassis collection is added only to top level manager.
         manager.add_collection(attribute::Collection(
             enums::CollectionName::Chassis,
             enums::CollectionType::Chassis));
-
-        manager.add_collection(attribute::Collection(
-            enums::CollectionName::Fans,
-            enums::CollectionType::Fans));
-
-        manager.add_collection(attribute::Collection(
-            enums::CollectionName::ThermalZones,
-            enums::CollectionType::ThermalZones));
-
-        manager.add_collection(attribute::Collection(
-            enums::CollectionName::Psus,
-            enums::CollectionType::PSUs));
 
         make_manager_info(manager, json);
         return manager;
@@ -196,6 +195,31 @@ private:
         chassis.set_status({agent_framework::model::enums::State::Enabled,
                             agent_framework::model::enums::Health::OK});
 
+        /*Add ONL related PM Nodes*/
+        Fan fan{chassis.get_uuid()};
+        fan.set_chassis(chassis.get_uuid());
+        fan.set_current_speed(0);
+        fan.set_fan_type(0);
+        fan.set_status_health("unknown");
+        fan.set_status_state("unknown");
+        fan.set_fan_id(1);
+        ChassisComponents::get_instance()->get_fan_manager().add_entry(fan);
+
+        ThermalZone tzone{chassis.get_uuid()};
+        tzone.set_chassis(chassis.get_uuid());
+        tzone.set_temperature(0);
+        tzone.set_tz_id(1);
+        tzone.set_warning_temp(0);
+        tzone.set_error_temp(0);
+        tzone.set_shutdown_temp(0);
+        tzone.set_status_health("unknow");
+        tzone.set_status_state("unknow");
+        ChassisComponents::get_instance()->get_thermal_zone_manager().add_entry(tzone);
+
+        Psu psu{chassis.get_uuid()};
+        psu.set_chassis(chassis.get_uuid());
+        psu.set_psu_id(1);
+        ChassisComponents::get_instance()->get_psu_manager().add_entry(psu);
         return chassis;
     }
 };
