@@ -29,33 +29,36 @@
 #include "agent-framework/command/compute_commands.hpp"
 #include "agent-framework/command/rmm_commands.hpp"
 
+using namespace agent_framework::model;
 using namespace agent_framework::command;
 using namespace agent_framework::module;
 
 REGISTER_COMMAND(GetChassisInfo,
-    [] (const GetChassisInfo::Request& req, GetChassisInfo::Response& rsp) {
-        log_debug("acc rpc ", "Acc GetChassisInfo with parameters: chassis " << req.get_uuid());
-        rsp = CommonComponents::get_instance()->get_chassis_manager().get_entry(req.get_uuid());
-    }
-);
+                 [](const GetChassisInfo::Request &req, GetChassisInfo::Response &rsp) {
+                     log_debug("acc chassis agent rpc", "Acc GetChassisInfo with parameters: chassis " << req.get_uuid());
+                     rsp = CommonComponents::get_instance()->get_chassis_manager().get_entry(req.get_uuid());
+                 });
 
 REGISTER_COMMAND(GetFanInfo,
-    [] (const GetFanInfo::Request& req, GetFanInfo::Response& rsp) {
-         log_debug("acc rpc", "GetFanInfo with parameters: Fan " << req.get_uuid());   
-        rsp = ChassisComponents::get_instance()->get_fan_manager().get_entry(req.get_uuid());
-    }
-);
+                 [](const GetFanInfo::Request &req, GetFanInfo::Response &rsp) {
+                     log_debug("acc chassis agent rpc", "GetFanInfo with parameters: Fan " << req.get_uuid());
+                     rsp = ChassisComponents::get_instance()->get_fan_manager().get_entry(req.get_uuid());
+                 });
 
 REGISTER_COMMAND(GetThermalZoneInfo,
-    [] (const GetThermalZoneInfo::Request& req, GetThermalZoneInfo::Response& rsp) {
-         log_debug("acc rpc", "GetThermalZoneInfo with parameters: ThermalZone " << req.get_uuid());   
-        rsp = ChassisComponents::get_instance()->get_thermal_zone_manager().get_entry(req.get_uuid());
-    }
-);
+                 [](const GetThermalZoneInfo::Request &req, GetThermalZoneInfo::Response &rsp) {
+                     log_debug("acc chassis agent rpc", "GetThermalZoneInfo with parameters: ThermalZone " << req.get_uuid());
+                     rsp = ChassisComponents::get_instance()->get_thermal_zone_manager().get_entry(req.get_uuid());
+                 });
 
 REGISTER_COMMAND(GetPsuInfo,
-    [] (const GetPsuInfo::Request& req, GetPsuInfo::Response& rsp) {
-         log_debug("acc rpc", "GetPsuInfo with parameters: PSU " << req.get_uuid());   
-        rsp = ChassisComponents::get_instance()->get_psu_manager().get_entry(req.get_uuid());
-    }
-);
+                 [](const GetPsuInfo::Request &req, GetPsuInfo::Response &rsp) {
+                     log_debug("acc chassis agent rpc", "GetPsuInfo with parameters: PSU " << req.get_uuid());
+                     rsp = ChassisComponents::get_instance()->get_psu_manager().get_entry(req.get_uuid());
+                 });
+
+REGISTER_COMMAND(GetLogServiceInfo,
+                 [](const GetLogServiceInfo::Request &req, GetLogServiceInfo::Response &rsp) {
+                     log_debug("acc chassis agent rpc", "Getting log service info.");
+                     rsp = get_manager<LogService>().get_entry(req.get_uuid());
+                 });

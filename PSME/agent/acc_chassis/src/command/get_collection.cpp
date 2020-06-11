@@ -76,7 +76,7 @@ void process_chassis(const Collection &collection, const std::string &uuid,
     else
     {
         THROW(agent_framework::exceptions::InvalidCollection,
-              "compute-agent", "Process Chassis not found: \'" + name + "\'.");
+              "acc-chassis-agent", "Process chassis not found: \'" + name + "\'.");
     }
 }
 
@@ -88,9 +88,14 @@ void process_manager(const Collection &collection, const std::string &uuid,
         std::cout << "////// Add Chassis component //////" << std::endl;
         response_add_subcomponents(CommonComponents::get_instance()->get_chassis_manager().get_keys(uuid), response);
     }
+    else if (enums::CollectionType::LogServices== collection.get_type())
+    {
+        std::cout << "////// Add Logservice component //////" << std::endl;
+        response_add_subcomponents(CommonComponents::get_instance()->get_log_service_manager().get_keys(uuid), response);
+    }
     else
     {
-        THROW(agent_framework::exceptions::InvalidCollection, "chassis-agent", "Invalid collection name: \'" + name + "\'");
+        THROW(agent_framework::exceptions::InvalidCollection, "acc-chassis-agent", "Process manager not found name: \'" + name + "\'");
     }
 }
 

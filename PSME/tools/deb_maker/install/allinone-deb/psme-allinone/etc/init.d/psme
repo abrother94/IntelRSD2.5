@@ -20,7 +20,7 @@ PSMED_NETWORK_STUB_DAEMON=/usr/local/bin/psme-network-stubs
 PSMED_NETWORK_STUB_NAME=psme-network-stubs 
 PSMED_CHASSIS_ACC_DAEMON=/usr/local/bin/acc-psme-chassis
 PSMED_CHASSIS_ACC_NAME=acc-psme-chassis
-#C_PINFO=/etc/psme/C_PINFO
+C_PINFO=/etc/psme/C_PINFO
 
 force_kill() {
 	pid=`ps axu|grep $1|grep -v grep|awk '{print $2}'`
@@ -153,13 +153,11 @@ get_status(){
 
 do_start() {
     start_daemon_with_param $PSMED_REST_DAEMON $PSMED_REST_NAME $PSMED_REST_DAEMON_OPTS;
-#Create Platform INFO
-#    . ${C_PINFO}
+    . ${C_PINFO}
     start_daemon_with_param $PSMED_CHASSIS_ACC_DAEMON $PSMED_CHASSIS_ACC_NAME $CHASSIS_ACC_DAEMON_OPTS;
 }
 
 do_stop() {
-#Add for acc_sw psme
     stop_daemon $PSMED_REST_DAEMON $PSMED_REST_NAME;
     stop_daemon $PSMED_CHASSIS_ACC_DAEMON $PSMED_CHASSIS_ACC_NAME;
 }

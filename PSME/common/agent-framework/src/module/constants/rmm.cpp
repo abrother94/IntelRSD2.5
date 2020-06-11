@@ -57,6 +57,7 @@ constexpr const char ThermalZone::ERROR_TEMP[];
 constexpr const char ThermalZone::STATUS_HEALTH[];
 constexpr const char ThermalZone::STATUS_STATE[];
 constexpr const char ThermalZone::THERMAL_TYPE[];
+constexpr const char ThermalZone::READINGCELSIUS[];
 
 constexpr const char Psu::PSU[];
 constexpr const char Psu::STATUS[];

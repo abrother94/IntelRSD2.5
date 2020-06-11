@@ -160,3 +160,7 @@
 #include "account_service/account.hpp"
 #include "account_service/role.hpp"
 #include "account_service/role_collection.hpp"
+
+#include "acc_chassis/acc_power.hpp"
+#include "acc_chassis/acc_thermal.hpp"
+#include "acc_chassis/acc_chassis.hpp"

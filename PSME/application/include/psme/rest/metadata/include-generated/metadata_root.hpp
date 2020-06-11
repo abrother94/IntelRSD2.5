@@ -36,6 +36,7 @@ R"Xy+Z*aF--(<?xml version="1.0" encoding="UTF-8"?>
     <edmx:Include Namespace="Chassis"/>
     <edmx:Include Namespace="Chassis.v1_2_0"/>
     <edmx:Include Namespace="Chassis.v1_3_0"/>   
+    <edmx:Include Namespace="Chassis.v1_7_0"/>   
    </edmx:Reference>
 
    <edmx:Reference Uri="/redfish/v1/metadata/Thermal_v1.xml">
@@ -52,9 +53,14 @@ R"Xy+Z*aF--(<?xml version="1.0" encoding="UTF-8"?>
     <edmx:Include Namespace="ManagerCollection"/>
   </edmx:Reference>
 
+  <edmx:Reference Uri="/redfish/v1/metadata/NetworkAdapterCollection_v1.xml">
+    <edmx:Include Namespace="NetworkAdapterCollection"/>
+  </edmx:Reference>
+
   <edmx:Reference Uri="/redfish/v1/metadata/Manager_v1.xml">
     <edmx:Include Namespace="Manager"/>
     <edmx:Include Namespace="Manager.v1_0_0"/>    
+    <edmx:Include Namespace="Manager.v1_4_0"/>    
   </edmx:Reference>
 
   <edmx:Reference Uri="/redfish/v1/metadata/ComputerSystem_v1.xml">
@@ -135,6 +141,7 @@ R"Xy+Z*aF--(<?xml version="1.0" encoding="UTF-8"?>
 
    <edmx:Reference Uri="/redfish/v1/metadata/ManagerNetworkProtocol_v1.xml">
     <edmx:Include Namespace="ManagerNetworkProtocol"/> 
+    <edmx:Include Namespace="ManagerNetworkProtocol.v1_0_0"/>
     <edmx:Include Namespace="ManagerNetworkProtocol.v1_0_2"/>
    </edmx:Reference>
 
@@ -145,6 +152,7 @@ R"Xy+Z*aF--(<?xml version="1.0" encoding="UTF-8"?>
    <edmx:Reference Uri="/redfish/v1/metadata/LogService_v1.xml">
     <edmx:Include Namespace="LogService"/>
     <edmx:Include Namespace="LogService.v1_0_0"/>
+    <edmx:Include Namespace="LogService.v1_1_1"/>
    </edmx:Reference> 
 
    <edmx:Reference Uri="/redfish/v1/metadata/LogEntryCollection_v1.xml">
@@ -296,6 +304,11 @@ R"Xy+Z*aF--(<?xml version="1.0" encoding="UTF-8"?>
     <edmx:Include Namespace="MessageRegistry"/>
     <edmx:Include Namespace="MessageRegistry.v1_0_0"/>
    </edmx:Reference>
+
+   <edmx:Reference Uri="/redfish/v1/metadata/IPAddresses_v1.xml">
+    <edmx:Include Namespace="IPAddresses"/>
+    <edmx:Include Namespace="IPAddresses.v1_0_0"/>
+   </edmx:Reference
 
   <edmx:DataServices>
     <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="Service">

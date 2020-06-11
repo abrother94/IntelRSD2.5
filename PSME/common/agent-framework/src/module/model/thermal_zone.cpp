@@ -48,6 +48,7 @@ json::Json ThermalZone::to_json() const {
     result[literals::ThermalZone::ERROR_TEMP] = get_error_temp();
     result[literals::ThermalZone::SHUTDOWN_TEMP] = get_shutdown_temp();	
     result[literals::ThermalZone::THERMAL_TYPE] = get_thermal_type();	
+    result[literals::ThermalZone::READINGCELSIUS] = get_temperature();	
     return result;
 }
 
@@ -68,5 +69,6 @@ ThermalZone ThermalZone::from_json(const json::Json& json) {
     zone.set_error_temp(json[literals::ThermalZone::ERROR_TEMP]);       
     zone.set_shutdown_temp(json[literals::ThermalZone::SHUTDOWN_TEMP]); 
     zone.set_thermal_type(json[literals::ThermalZone::THERMAL_TYPE]);          
+    zone.set_temperature(json[literals::ThermalZone::READINGCELSIUS]);          
     return zone;
 }

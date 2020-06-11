@@ -36,7 +36,7 @@ json::Json make_prototype() {
 
     r[Common::ODATA_CONTEXT] = "/redfish/v1/$metadata#LogServiceCollection.LogServiceCollection";
     r[Common::ODATA_ID] = json::Json::value_t::null;
-    r[Common::ODATA_TYPE] = "#LogServicesCollection.LogServiceCollection";
+    r[Common::ODATA_TYPE] = "#LogServiceCollection.LogServiceCollection";
     r[Common::NAME] = "Log Service Collection";
     r[Common::DESCRIPTION] = "Collection of LogServices for this Manager";
     r[Collection::ODATA_COUNT] = json::Json::value_t::null;

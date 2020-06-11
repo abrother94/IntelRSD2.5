@@ -39,8 +39,8 @@ namespace acc_onlp_helper
 using namespace std;
 
 static constexpr const int SIZE_EEPROM = 600;
-static constexpr const char STD_SEC_PATH[] = "/usr/local/bin/mod_conf/";
-static constexpr const char PORT_MAP_PATH[] = "/usr/local/bin/mod_conf/map/";
+static constexpr const char STD_SEC_PATH[] = "/etc/psme/mod_conf/";
+static constexpr const char PORT_MAP_PATH[] = "/etc/psme/mod_conf/map/";
 class e_oom
 {
     bool get_conf();
@@ -315,9 +315,6 @@ public:
         get_basic_info();
         get_board_info();
     }
-    //HelperTools m_help_tools = {};
-    //RFLogEntry Entry = {};
-
     static std::vector<std::string> m_Event_Resouce_Add;
     static std::vector<std::string> m_Event_Resouce_Remove;
     static std::vector<std::string> m_Event_Port_Resouce_Add;
@@ -449,7 +446,7 @@ protected:
     std::string m_cpu_manu = {};
     std::string m_cpu_vid = {};
     std::string m_cpu_model_name = {};
-    std::string m_platinfo_path = {"/etc/psme/platform_info.conf"};
+    std::string m_platinfo_path = {"/etc/psme/acc-psme-chassis.conf"};
     std::string m_onl_platinfo_path = {"/etc/onl/platform"};
     std::string m_onl_platinfo_name = {"na"};
     std::string m_sys_tx_name={"/sfp_tx_disable"};

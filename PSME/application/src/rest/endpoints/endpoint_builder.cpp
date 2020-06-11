@@ -107,8 +107,13 @@ void EndpointBuilder::build_endpoints() {
     // "/redfish/v1/Chassis"
     mp.register_handler(ChassisCollection::UPtr(new ChassisCollection(constants::Routes::CHASSIS_COLLECTION_PATH)));
 
+#ifndef ACC_CHSSIS
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}"
     mp.register_handler(Chassis::UPtr(new Chassis(constants::Routes::CHASSIS_PATH)));
+#else
+    // "/redfish/v1/Chassis/{chassisId:[0-9]+}"
+    mp.register_handler(Acc_Chassis::UPtr(new Acc_Chassis(constants::Routes::CHASSIS_PATH)));
+#endif
 
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Actions/Chassis.Reset"
     mp.register_handler(ChassisReset::UPtr(new ChassisReset(constants::Routes::CHASSIS_RESET_PATH)));
@@ -145,15 +150,25 @@ void EndpointBuilder::build_endpoints() {
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/PCIeDevices/{deviceId:[0-9]+}/Functions/{functionId:[0-9]+}"
     mp.register_handler(PcieFunction::UPtr(new PcieFunction(constants::Routes::PCIE_FUNCTION_PATH)));
 
+#ifndef ACC_CHSSIS
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Power"
     mp.register_handler(Power::UPtr(new Power(constants::Routes::POWER_PATH)));
+#else
+    // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Power"
+    mp.register_handler(Acc_Power::UPtr(new Acc_Power(constants::Routes::POWER_PATH)));
+#endif
 
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Power/Oem/Intel_RackScale/Actions/Intel.Oem.RequestPowerSupplyStateChange"
     mp.register_handler(PowerSupplyRequestStateChange::UPtr(
         new PowerSupplyRequestStateChange(constants::Routes::POWER_SUPPLY_REQUEST_STATE_CHANGE_PATH)));
 
+#ifndef ACC_CHSSIS
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Thermal"
     mp.register_handler(Thermal::UPtr(new Thermal(constants::Routes::THERMAL_PATH)));
+#else
+    // "/redfish/v1/Chassis/{chassisId:[0-9]+}/Thermal"
+    mp.register_handler(Acc_Thermal::UPtr(new Acc_Thermal(constants::Routes::THERMAL_PATH)));
+#endif
 
     // "/redfish/v1/Chassis/{chassisId:[0-9]+}/NetworkAdapters"
     mp.register_handler(NetworkAdapterCollection::UPtr(new NetworkAdapterCollection(

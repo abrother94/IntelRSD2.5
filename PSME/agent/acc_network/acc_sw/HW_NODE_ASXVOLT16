@@ -1,0 +1,9 @@
+#################################################################################
+# Support Platform  type
+#################################################################################
+
+fans_type=("S" "S" "S" "S" "S" "S" "P" "P")
+thermals_type=("C" "S" "S" "S" "S" "P" "P")
+psus_type=("S" "S")
+mapping=("PON" "PON" "PON" "PON" "PON" "PON" "PON" "PON" "PON" "PON"
+"PON" "PON" "PON" "PON" "PON" "PON" "QSFP" "QSFP" "QSFP" "QSFP")

@@ -111,9 +111,6 @@ public:
 
             Fan fan{chassis.get_uuid()};
             get_manager<Fan>().add_entry(fan);
-
-            ChassisSensor temperature_sensor = make_chassis_sensor(chassis.get_uuid(), enums::ReadingUnits::Celsius);
-            get_manager<ChassisSensor>().add_entry(temperature_sensor);
         }
     }
 
@@ -251,14 +248,6 @@ private:
 
         return chassis;
     }
-
-
-    ChassisSensor make_chassis_sensor(const std::string& parent, enums::ReadingUnits unit) {
-        ChassisSensor sensor{parent};
-        sensor.set_reading_units(unit);
-        return sensor;
-    }
-
 };
 
 

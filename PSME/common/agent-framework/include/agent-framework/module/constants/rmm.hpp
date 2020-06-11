@@ -69,6 +69,7 @@ public:
     static constexpr const char THERMAL_TYPE[]="thermal_type";	
     static constexpr const char STATUS_HEALTH[]= "status_health";
     static constexpr const char STATUS_STATE[]= "status_state"; 
+    static constexpr const char READINGCELSIUS[]="ReadingCelsius";	
 };
 
 /*!

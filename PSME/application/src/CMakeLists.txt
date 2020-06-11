@@ -36,6 +36,8 @@ generate_default_config_file(
 
 include_directories(
     ${PSME_APPLICATION_DIR}/include
+    ${ACC_ONLP_HELPER_INCLUDE_DIRS}
+    ${JSONCXX_INCLUDE_DIRS}
 )
 
 add_subdirectory(rest)

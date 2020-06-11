@@ -341,6 +341,13 @@ if(ENABLE_HTTPS)
     )
 endif()
 
+# Todo if Flag to define 
+set(EXTRA_SOURCES ${EXTRA_SOURCES}
+    endpoints/acc_chassis/acc_power.cpp
+    endpoints/acc_chassis/acc_thermal.cpp
+    endpoints/acc_chassis/acc_chassis.cpp
+    )
+
 set_source_files_properties(
         utils/mapper.cpp
         PROPERTIES COMPILE_FLAGS "-Wno-exit-time-destructors -Wno-global-constructors"

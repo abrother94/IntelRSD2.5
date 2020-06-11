@@ -72,7 +72,8 @@ json::Json make_prototype() {
     r[Common::LINKS][Manager::MANAGER_FOR_CHASSIS] = json::Json::value_t::array;
     r[Common::LINKS][Manager::MANAGER_FOR_SERVERS] = json::Json::value_t::array;
     r[Common::LINKS][Manager::MANAGER_FOR_SWITCHES] = json::Json::value_t::array;
-    r[Common::LINKS][Manager::MANAGER_IN_CHASSIS] = json::Json::value_t::null;
+    //Todo::
+    //r[Common::LINKS][Manager::MANAGER_IN_CHASSIS] = json::Json::value_t::null;
     r[Common::LINKS][Common::OEM][Common::RACKSCALE][Common::ODATA_TYPE] = "#Intel.Oem.ManagerLinks";
     r[Common::LINKS][Common::OEM][Common::RACKSCALE][Manager::MANAGER_FOR_SERVICES] = json::Json::value_t::array;
     r[Common::LINKS][Common::OEM][Common::RACKSCALE][Manager::MANAGER_FOR_FABRICS] = json::Json::value_t::array;
@@ -107,18 +108,18 @@ void fill_links(const agent_framework::model::Manager& manager, json::Json& r) {
             endpoint::utils::get_component_url(agent_framework::model::enums::Component::Chassis, chassis_uuid);
         r[Common::LINKS][constants::Manager::MANAGER_FOR_CHASSIS].push_back(chassis_link);
     }
-
+    //Todo::
     // Manager is located in Chassis pointed by location field in model
-    const auto& chassis_uuid = manager.get_location();
-    try {
-        if (chassis_uuid.has_value()) {
-            json::Json chassis_link = json::Json();
-            chassis_link[Common::ODATA_ID] =
-                endpoint::utils::get_component_url(agent_framework::model::enums::Component::Chassis, chassis_uuid);
-            r[Common::LINKS][constants::Manager::MANAGER_IN_CHASSIS] = std::move(chassis_link);
-        }
-    }
-    catch (const agent_framework::exceptions::InvalidUuid&) {}
+    //const auto& chassis_uuid = manager.get_location();
+    //try {
+    //    if (chassis_uuid.has_value()) {
+    //        json::Json chassis_link = json::Json();
+    //        chassis_link[Common::ODATA_ID] =
+    //            endpoint::utils::get_component_url(agent_framework::model::enums::Component::Chassis, chassis_uuid);
+    //        r[Common::LINKS][constants::Manager::MANAGER_IN_CHASSIS] = std::move(chassis_link);
+    //    }
+    //}
+    //catch (const agent_framework::exceptions::InvalidUuid&) {}
 
     {
         agent_framework::module::GenericManager<agent_framework::model::System>::IdsVec system_ids{};

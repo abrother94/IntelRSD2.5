@@ -166,7 +166,9 @@ void GetOnlpInfo::get_onlp_info()
                     psu_->set_power_input(p_in);
 
                     int p_out = sonlp.get_psu_info_by_(psuid, Acc_Switch::Psu_Content::Pout);
+                    //Set power output = last power output //
                     psu_->set_power_output(p_out);
+                    psu_->set_last_power_output_watts(p_out);
 
                     std::string current_health = sonlp.get_psu_info_by_(psuid, "Status_Health");
                     psu_->set_status_health(current_health);

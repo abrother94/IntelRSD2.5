@@ -59,8 +59,8 @@ endpoint::LogService::LogService(const std::string& path) : EndpointBase(path) {
 
 endpoint::LogService::~LogService() {}
 
-
-void endpoint::LogService::get(const server::Request& request, server::Response& response) {
+void endpoint::LogService::get(const server::Request &request, server::Response &response)
+{
     auto r = ::make_prototype();
 
     auto log_service = psme::rest::model::find<agent_framework::model::Manager, agent_framework::model::LogService>(request.params).get();
@@ -68,7 +68,7 @@ void endpoint::LogService::get(const server::Request& request, server::Response&
     endpoint::utils::fill_name_and_description(log_service, r);
 
     r[Common::ODATA_ID] = PathBuilder(request).build();
-    r[Common::ID] = log_service.get_id();
+    r[Common::ID] = std::to_string(log_service.get_id());
     r[constants::LogService::LOG_ENTRY_TYPE] = log_service.get_log_entry_type();
     r[constants::LogService::OVERWRITE_POLICY] = log_service.get_overwrite_policy();
     r[constants::LogService::ENTRIES][Common::ODATA_ID] = PathBuilder(request).append(constants::LogService::ENTRIES).build();
